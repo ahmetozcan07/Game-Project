@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         speed = walkSpeed;
-        Observable.EveryUpdate().Subscribe(_ => Movement()).AddTo(this);
+        Observable.EveryUpdate().Subscribe(_ => Movement());
     }
 
     void Movement()

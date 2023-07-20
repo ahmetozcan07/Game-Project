@@ -5,15 +5,16 @@ using System.Collections.Generic;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField]private RectTransform touchRegion;
+    [SerializeField] private RectTransform touchRegion;
     private Animator animator;
     private PlayerMovement playerMovement;
 
-
+    [SerializeField] private float damage;
     private List<GameObject> collidingObjects = new List<GameObject>();
     private bool canAttack = true;
     private bool didAttack = false;
     private float attackThreshold = 0.7f;
+
 
     //private bool isThereAnEnemy = false;
     //private int collidingCount = 0;
@@ -79,7 +80,7 @@ public class PlayerAttack : MonoBehaviour
                 if(obj != null)
                 {
                     Debug.Log("damage done");
-                    obj.GetComponent<HealthPoints>().TakeDamage(20);
+                    obj.GetComponent<HealthPoints>().TakeDamage(damage);
                     didAttack = true;
                 }
             }

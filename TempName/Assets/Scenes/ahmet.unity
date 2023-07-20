@@ -1013,6 +1013,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1879223463}
     - target: {fileID: 2731920713774065720, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
+      propertyPath: damage
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731920713774065720, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
       propertyPath: touchRegion
       value: 
       objectReference: {fileID: 1879223463}
