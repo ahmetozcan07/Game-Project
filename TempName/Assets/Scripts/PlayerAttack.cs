@@ -13,7 +13,7 @@ public class PlayerAttack : MonoBehaviour
     private List<GameObject> collidingObjects = new List<GameObject>();
     private bool canAttack = true;
     private bool didAttack = false;
-    private float attackThreshold = 0.7f;
+    private float attackThreshold = 0.6f;
 
 
     //private bool isThereAnEnemy = false;
@@ -55,7 +55,7 @@ public class PlayerAttack : MonoBehaviour
         string attack = "Attack" + attackStyle.ToString();
 
         animator.SetTrigger(attack);
-
+        yield return new WaitForSeconds(0.2f);
         canAttack = false;
         playerMovement.speed = 0;
         yield return new WaitForSeconds(attackThreshold);
