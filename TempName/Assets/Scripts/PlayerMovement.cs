@@ -16,12 +16,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private RectTransform touchRegion;
 
 
+
     float horizontalMove = 0.0f;
     float verticalMove = 0.0f;
 
     private Rigidbody rb;
     private Animator animator = null;
-
 
     void Start()
     {
@@ -29,14 +29,17 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         speed = walkSpeed;
         Observable.EveryUpdate().Subscribe(_ => Movement());
+
     }
 
     void Movement()
     {
+
         horizontalMove = joystick.Horizontal;
         verticalMove = joystick.Vertical;
 
         Vector3 movement = new Vector3(horizontalMove, 0f, verticalMove).normalized * speed;
+
 
         if (movement != Vector3.zero)
         {
@@ -49,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
             animator.ResetTrigger("Run Forward");
             animator.SetTrigger("Idle");
         }
+
         rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
     }
 
@@ -78,5 +82,6 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+
     }
 }
