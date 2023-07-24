@@ -1,3 +1,4 @@
+using Lean.Touch;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,8 +7,15 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Joystick joystick;
-    public float speed = 1.0f;
+    [SerializeField] private Joystick joystick;
+    [HideInInspector] public float speed;
+    public float walkSpeed;
+    [SerializeField] private float sprintSpeed;
+    private bool canSprint = true;
+
+    [SerializeField] private RectTransform touchRegion;
+
+
 
     float horizontalMove = 0.0f;
     float verticalMove = 0.0f;
@@ -15,24 +23,23 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private Animator animator = null;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        speed = walkSpeed;
+        Observable.EveryUpdate().Subscribe(_ => Movement());
 
-
-        Observable.EveryUpdate().Subscribe(_ => Movement()).AddTo(this);
     }
 
     void Movement()
     {
-        horizontalMove = joystick.Horizontal * speed;
 
-        verticalMove = joystick.Vertical * speed;
+        horizontalMove = joystick.Horizontal;
+        verticalMove = joystick.Vertical;
 
-        Vector3 movement = new Vector3(horizontalMove, 0f, verticalMove);
+        Vector3 movement = new Vector3(horizontalMove, 0f, verticalMove).normalized * speed;
+
 
         if (movement != Vector3.zero)
         {
@@ -47,5 +54,34 @@ public class PlayerMovement : MonoBehaviour
         }
 
         rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+    }
+
+    private void OnEnable()
+    {
+        LeanTouch.OnFingerTap += OnFingerDown;
+    }
+
+    private void OnDisable()
+    {
+        LeanTouch.OnFingerTap -= OnFingerDown;
+    }
+
+    private void OnFingerDown(LeanFinger finger)
+    {
+        if (RectTransformUtility.RectangleContainsScreenPoint(touchRegion, finger.ScreenPosition))
+        {
+            if(speed == sprintSpeed)
+            {
+                speed = walkSpeed;
+            }
+            else if(speed == walkSpeed)
+            {
+                if (canSprint)
+                {
+                    speed = sprintSpeed;
+                }
+            }
+        }
+
     }
 }
