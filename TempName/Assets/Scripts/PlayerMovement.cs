@@ -44,13 +44,13 @@ public class PlayerMovement : MonoBehaviour
         if (movement != Vector3.zero)
         {
             transform.forward = movement;
-            animator.ResetTrigger("Idle");
-            animator.SetTrigger("Run Forward");
+            animator.SetBool("Idle", false);
+            animator.SetBool("Run Forward", true);
         }
         else
         {
-            animator.ResetTrigger("Run Forward");
-            animator.SetTrigger("Idle");
+            animator.SetBool("Idle", true);
+            animator.SetBool("Run Forward", false);
         }
 
         rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);

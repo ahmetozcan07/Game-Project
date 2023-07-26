@@ -1,0 +1,186 @@
+using System.Collections;
+using UniRx;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class DeerAI : MonoBehaviour
+{
+    Vector3[] patrolPoints = new Vector3[6]; // array of patrol points
+    [SerializeField] private float sightDistance = 12f;
+    public LayerMask playerLayer;
+    private float fleeDistance = 5f;
+    private Transform playerLastSeenAt;
+    [SerializeField] private float attackCooldown = 5f;
+    [SerializeField] private float damage;
+
+    private NavMeshAgent navMeshAgent;
+    private Animator animator;
+    private int currentPatrolIndex = 0;
+    private bool fleeing = false;
+    private bool waiting = false;
+    private bool attacking = false;
+    private bool didAttack = false;
+    private bool withinAttackRange = false;
+
+    void Start()
+    {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+        for (int i = 0; i < patrolPoints.Length; i++)
+        {
+            patrolPoints[i] = new Vector3(0, 0, 0);
+        }
+        RandomPatrolPoints();
+
+        // Walk to one of the patrol points
+        if (patrolPoints.Length > 0)
+        {
+            navMeshAgent.SetDestination(patrolPoints[currentPatrolIndex]);
+            Debug.Log(patrolPoints[currentPatrolIndex] + " " + patrolPoints[1]);
+        }
+
+
+        Observable.EveryUpdate()
+            .Subscribe(_ => ManageAnimations());
+        Observable.EveryUpdate()
+            .Subscribe(_ => PlayerSeen());
+    }
+
+    private void PlayerSeen()
+    {
+        // Position of the rabbit
+        Vector3 deerPosition = transform.position;
+
+        // If not running, patrol
+        if (!fleeing)
+        {
+            Patrol();
+        }
+        else
+        {
+            Flee(deerPosition);
+        }
+
+        // Detect player
+        Vector3 rayDirection = transform.forward;
+        RaycastHit hit;
+        if (Physics.Raycast(deerPosition, rayDirection, out hit, sightDistance, playerLayer))
+        {
+            playerLastSeenAt = hit.transform;
+            // Player seen, run
+            fleeing = true;
+            Flee(deerPosition);
+            ManageAnimations();
+        }
+        else if (fleeing && Vector3.Distance(transform.position, playerLastSeenAt.position) > 50f) // stop running if distance is high
+        {
+            //start patrolling again
+            RandomPatrolPoints();
+            fleeing = false;
+            transform.rotation = Quaternion.Euler(0,
+                Quaternion.LookRotation(playerLastSeenAt.position).eulerAngles.y, 0);
+        }
+    }
+
+    private void Patrol()
+    {
+        // Walk to next patrol point when arrived at one of patrol points
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f && !waiting && !fleeing)
+        {
+            navMeshAgent.updateRotation = false;
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+            StartCoroutine(IdleAtPatrolPoint());
+        }
+    }
+
+    private void Flee(Vector3 rabbitPosition)
+    {
+        Vector3 fleeDirection = transform.position - playerLastSeenAt.position;
+        fleeDirection.y = 0f;
+        Vector3 fleePosition = rabbitPosition + fleeDirection.normalized * fleeDistance;
+        navMeshAgent.SetDestination(fleePosition);
+    }
+
+    IEnumerator IdleAtPatrolPoint()
+    {
+        waiting = true;
+        yield return new WaitForSeconds(Random.Range(6, 13));
+        waiting = false;
+        navMeshAgent.updateRotation = true;
+        navMeshAgent.SetDestination(patrolPoints[currentPatrolIndex]);
+    }
+
+    IEnumerator Attack()
+    {
+        int attackStyle = Random.Range(1, 3);
+        string attack = "isAttacking" + attackStyle.ToString();
+        animator.SetBool(attack, true);
+        yield return new WaitForSeconds(0.2f);
+        attacking = true;
+        navMeshAgent.speed = 0;
+        yield return new WaitForSeconds(attackCooldown);
+        attacking = true;
+        didAttack = false;
+        navMeshAgent.speed = 5;
+    }
+
+    private void RandomPatrolPoints()
+    {
+        for (int i = 0; i < patrolPoints.Length; i++)
+        {
+            patrolPoints[i] = new Vector3(transform.position.x + Random.Range(16, 64), 0,
+                transform.position.z + Random.Range(6, 32));
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer == playerLayer)
+        {
+
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer == playerLayer)
+        {
+            if (attacking && !didAttack)
+            {
+                Debug.Log("damage done");
+                other.GetComponent<HealthPoints>().TakeDamage(damage);
+                didAttack = true;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == playerLayer)
+        {
+
+        }
+    }
+
+    private void ManageAnimations()
+    {
+        if (waiting)
+        {
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isWalking", false);
+            animator.SetBool("Idle", true);
+        }
+        else if (fleeing)
+        {
+            animator.SetBool("isRunning", true);
+            animator.SetBool("isWalking", false);
+            animator.SetBool("Idle", false);
+        }
+        else
+        {
+            animator.SetBool("isWalking", true);
+            animator.SetBool("isRunning", false);
+            animator.SetBool("Idle", false);
+        }
+    }
+}

@@ -11,13 +11,9 @@ public class PlayerAttack : MonoBehaviour
 
     [SerializeField] private float damage;
     private List<GameObject> collidingObjects = new List<GameObject>();
-    private bool canAttack = true;
+    private bool attacking = false;
     private bool didAttack = false;
-    private float attackThreshold = 0.6f;
-
-
-    //private bool isThereAnEnemy = false;
-    //private int collidingCount = 0;
+    private float attackCooldown = 0.6f;
 
     private void Start()
     {
@@ -38,7 +34,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (RectTransformUtility.RectangleContainsScreenPoint(touchRegion, finger.ScreenPosition))
         {
-            if (canAttack)
+            if (!attacking)
             {
                 StartCoroutine(Attack());
             }
@@ -56,10 +52,10 @@ public class PlayerAttack : MonoBehaviour
 
         animator.SetTrigger(attack);
         yield return new WaitForSeconds(0.2f);
-        canAttack = false;
+        attacking = true;
         playerMovement.speed = 0;
-        yield return new WaitForSeconds(attackThreshold);
-        canAttack = true;
+        yield return new WaitForSeconds(attackCooldown);
+        attacking = false;
         didAttack = false;
         playerMovement.speed = playerMovement.walkSpeed;
     }
@@ -72,12 +68,11 @@ public class PlayerAttack : MonoBehaviour
         {
             collidingObjects.Add(other.gameObject);
         }
-        
-        if (!canAttack && !didAttack)
+        if (attacking && !didAttack)
         {
             foreach (var obj in collidingObjects)
             {
-                if(obj != null)
+                if (obj != null)
                 {
                     Debug.Log("damage done");
                     obj.GetComponent<HealthPoints>().TakeDamage(damage);
