@@ -65,12 +65,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BaseStages: 3
-    - _BendRotationRandom: 0
-    - _BladeCurve: 1.26
-    - _BladeForward: 0.418
-    - _BladeHeight: 0.5
-    - _BladeHeightRandom: 0.3
+    - _BaseStages: 0.001
+    - _BendRotationRandom: 0.75
+    - _BladeCurve: 2.02
+    - _BladeForward: 0.44
+    - _BladeHeight: 6
+    - _BladeHeightRandom: 6
     - _BladeRandomAmount: 0.5
     - _BladeSegments: 3
     - _BladeWidth: 0
@@ -96,17 +96,17 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _TessellationUniform: 1
-    - _TranslucentGain: 0.105
+    - _TranslucentGain: 0.45
     - _UVSec: 0
-    - _ViewLOD: 64
+    - _ViewLOD: 300
     - _ViewRadius: 7
     - _WindScale: 1
-    - _WindStrength: 0.159
+    - _WindStrength: 0.5
     - _ZWrite: 1
     m_Colors:
     - _BottomColor: {r: 0.036169447, g: 0.1509434, b: 0.039038807, a: 1}
     - _Color: {r: 0, g: 0.5754717, b: 0.06694827, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _TopColor: {r: 0.19764124, g: 0.3301887, b: 0.0728907, a: 1}
+    - _TopColor: {r: 0.29728186, g: 0.3584906, b: 0.24147385, a: 1}
     - _WindFrequency: {r: 0.05, g: 0.05, b: 0, a: 0}
   m_BuildTextureStacks: []

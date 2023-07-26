@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: New Material
+  m_Shader: {fileID: 4800000, guid: c46bdee8f39aa0b458ce9f713a9ab211, type: 3}
+  m_Parent: {fileID: 2100000, guid: 398e375eea068974d8413ce961f68a52, type: 2}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _BaseStages: -1
+    - _BendRotationRandom: 1
+    - _BladeCurve: 1
+    - _BladeForward: 0.19
+    - _BladeHeight: 5.4
+    - _BladeHeightRandom: 0
+    - _BladeWidth: 0.4
+    - _BladeWidthRandom: 0
+    - _MaxStages: 2
+    - _TranslucentGain: 0.51
+    - _ViewLOD: 300
+    - _WindStrength: 0.3
+    m_Colors:
+    - _BottomColor: {r: 0.3764706, g: 0.06274509, b: 0.12042077, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _TopColor: {r: 0.8392157, g: 0.3215687, b: 0.33707526, a: 1}
+  m_BuildTextureStacks: []

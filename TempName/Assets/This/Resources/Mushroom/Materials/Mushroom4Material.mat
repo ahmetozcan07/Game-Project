@@ -31,8 +31,8 @@ Material:
     m_Floats:
     - _Underglow: 0.7
     m_Colors:
-    - _BaseColor1: {r: 1, g: 0.9671898, b: 0.2584905, a: 1}
-    - _BaseColor2: {r: 1, g: 0.5319614, b: 0.07058823, a: 0.484}
-    - _BottomColor: {r: 1, g: 0.90861917, b: 0.16862744, a: 1}
-    - _CapColor: {r: 0.96790844, g: 1, b: 0.20784312, a: 0.797}
+    - _BaseColor1: {r: 0.4811321, g: 0.4685286, b: 0.18337487, a: 1}
+    - _BaseColor2: {r: 0.4433962, g: 0.31401673, b: 0.18572444, a: 0.484}
+    - _BottomColor: {r: 0.4528302, g: 0.42752475, b: 0.21957992, a: 1}
+    - _CapColor: {r: 0.51614296, g: 0.5283019, b: 0.2212887, a: 0.797}
   m_BuildTextureStacks: []
