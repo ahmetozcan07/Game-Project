@@ -6,8 +6,7 @@ public class EnvironmentSpawner : MonoBehaviour
     private int[] numberOfPrefabsToSpawn = {
         10, 10, 10, 10, 10, 10, 10, //tree 100
         10, 10,//bush 20
-        25, 25, 100, 100, //grass 250
-        10, 10, 10, 10, //mushroom 40
+        100, 100, //grass 250
         10, 10, 10, 10 //rock 40
     };
     private float minimumSpacing = 2; //minimum mesafe

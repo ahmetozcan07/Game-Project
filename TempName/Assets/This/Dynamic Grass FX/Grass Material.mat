@@ -101,7 +101,7 @@ Material:
     - _ViewLOD: 300
     - _ViewRadius: 7
     - _WindScale: 1
-    - _WindStrength: 0.5
+    - _WindStrength: 0.3
     - _ZWrite: 1
     m_Colors:
     - _BottomColor: {r: 0.036169447, g: 0.1509434, b: 0.039038807, a: 1}
