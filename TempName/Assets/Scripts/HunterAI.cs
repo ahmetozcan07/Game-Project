@@ -10,15 +10,17 @@ public class HunterAI : MonoBehaviour
     public float timeToRotate = 2;                  //  Wait time when the enemy detect near the player without seeing
     public float speedWalk = 6;                     //  Walking speed, speed in the nav mesh agent
     public float speedRun = 9;                      //  Running speed
- 
-    public float viewRadius = 15;                   //  Radius of the enemy view
+    private Rigidbody rb;
+
+    public float viewRadius = 5;                   //  Radius of the enemy view
     public float viewAngle = 90;                    //  Angle of the enemy view
     public LayerMask playerMask;                    //  To detect the player with the raycast
     public LayerMask obstacleMask;                  //  To detect the obstacules with the raycast
     public float meshResolution = 1.0f;             //  How many rays will cast per degree
     public int edgeIterations = 4;                  //  Number of iterations to get a better performance of the mesh filter when the raycast hit an obstacule
     public float edgeDistance = 0.5f;               //  Max distance to calcule the a minumun and a maximum raycast when hits something
- 
+    public GameObject arrowPrefab;
+    public Transform arrowSpawnPosition;
  
     public List<Vector3> waypoints;                   //  All the waypoints where the enemy patrols
     int m_CurrentWaypointIndex;                     //  Current waypoint where the enemy is going to
@@ -36,6 +38,10 @@ public class HunterAI : MonoBehaviour
     private float interval = 10f;
     public int numberOfWaypoints = 5; // Oluşturulacak waypoint sayısı
     public float areaSize = 10f; // Oluşturulacak waypointlerin hareket edebileceği alanın boyutu
+    public float shootingRange = 5f;
+    public float shootCooldown = 2f;
+    private float nextShootTime = 0f;
+    public float shootForce = 10f;
 
     void Start()
     {
@@ -48,6 +54,7 @@ public class HunterAI : MonoBehaviour
         m_PlayerNear = false;
         m_WaitTime = startWaitTime;                 //  Set the wait time variable that will change
         m_TimeToRotate = timeToRotate;
+        rb = GetComponent<Rigidbody>();
  
         m_CurrentWaypointIndex = 0;                 //  Set the initial waypoint
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -87,37 +94,80 @@ public class HunterAI : MonoBehaviour
     }
 
     private void Chasing()
+{
+    m_PlayerNear = false;
+    playerLastPosition = Vector3.zero;
+
+    if (!m_CaughtPlayer)
     {
-        //  The enemy is chasing the player
-        m_PlayerNear = false;                       //  Set false that hte player is near beacause the enemy already sees the player
-        playerLastPosition = Vector3.zero;          //  Reset the player near position
- 
-        if (!m_CaughtPlayer)
+        Move(speedRun);
+        navMeshAgent.SetDestination(m_PlayerPosition);
+
+        // Set the "isChasing" parameter to true since the enemy is chasing the player.
+        animator.SetBool("isChasing", true);
+
+        // Check if the player is out of range or behind an obstacle
+        if (Vector3.Distance(transform.position, m_PlayerPosition) > viewRadius ||
+            Physics.Linecast(transform.position, m_PlayerPosition, obstacleMask))
         {
-            Move(speedRun);
-            navMeshAgent.SetDestination(m_PlayerPosition);          //  set the destination of the enemy to the player location
+            // Player is out of range or behind an obstacle, stop chasing and go back to patrolling.
+            m_IsPatrol = true;
+            m_PlayerNear = false;
+            m_WaitTime = startWaitTime;
+            navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex]);
+            animator.SetBool("isChasing", false); // Set the "isChasing" parameter to false.
+            return;
         }
-        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
+        if (Vector3.Distance(transform.position, m_PlayerPosition) <= shootingRange)
         {
-                if (m_WaitTime <= 0 && !m_CaughtPlayer && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 6f)
-            {
-                //  Check if the enemy is not near to the player, returns to patrol after the wait time delay
-                m_IsPatrol = true;
-                m_PlayerNear = false;
-                Move(speedWalk);
-                m_TimeToRotate = timeToRotate;
-                m_WaitTime = startWaitTime;
-                navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex]);
-            }
-            else
-            {
-                if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 2.5f)
-                    //  Wait if the current position is not the player position
-                    Stop();
-                m_WaitTime -= Time.deltaTime;
-            }
+            m_CaughtPlayer = true;
         }
+
+
+        // Check if the enemy is within shooting range and enough time has passed since the last shot.
+        
     }
+    else
+    {
+        Debug.Log(Vector3.Distance(transform.position, m_PlayerPosition));
+        Stop(); // Stop moving
+        animator.SetBool("isChasing", false);
+
+        
+
+        if (Time.time >= nextShootTime)
+        {
+            
+            // Face the player before shooting
+            Vector3 directionToPlayer = (m_PlayerPosition - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+            transform.rotation = lookRotation;
+
+            // Shoot an arrow
+            ShootArrow();
+            animator.SetTrigger("isShooting"); // Set the "isShooting" parameter to true.
+            Debug.Log("Shoot");
+
+            // Update the nextShootTime to enforce the shoot cooldown.
+            nextShootTime = Time.time + shootCooldown;
+            
+            if (Vector3.Distance(transform.position, m_PlayerPosition) > 6)
+            {
+            m_IsPatrol = true;
+            m_PlayerNear = false;
+            m_WaitTime = startWaitTime;
+            navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex]);
+            animator.SetBool("isChasing", false); // Set the "isChasing" parameter to false.
+            Debug.Log("Patrol");
+            return; 
+            }
+        }
+        // The enemy caught the player, so stop chasing and set "isChasing" parameter to false.
+        
+    }
+
+    // Rest of your existing code...
+}
  
     private IEnumerator WaitForReset()
     {
@@ -133,6 +183,17 @@ public class HunterAI : MonoBehaviour
     private void Idle()
     {
         animator.SetBool("isWalking", false);
+    }
+
+     private void ShootArrow()
+    {
+        // Instantiate the arrow prefab at the arrowSpawnPosition with the same rotation as the enemy.
+        GameObject arrow = Instantiate(arrowPrefab, arrowSpawnPosition.position, transform.rotation);
+
+        // Get the Rigidbody component of the arrow and add force forward to simulate the shooting motion.
+        Rigidbody arrowRigidbody = arrow.GetComponent<Rigidbody>();
+        arrowRigidbody.AddForce(transform.forward * shootForce, ForceMode.Impulse);
+
     }
 
     private void Patroling()
@@ -168,7 +229,7 @@ public class HunterAI : MonoBehaviour
         }
         else
         {
-            m_PlayerNear = false;           //  The player is no near when the enemy is platroling
+            m_PlayerNear = false;           //  The player is no near when the enemy is patroling
             playerLastPosition = Vector3.zero;
             navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex]);
             Move(speedWalk);      //  Set the enemy destination to the next waypoint
@@ -210,6 +271,7 @@ public class HunterAI : MonoBehaviour
     {
         navMeshAgent.isStopped = true;
         navMeshAgent.speed = 0;
+        rb.velocity = Vector3.zero;
     }
  
     void Move(float speed)
