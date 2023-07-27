@@ -15,19 +15,45 @@ public class SpawnCycle : MonoBehaviour
     private float minimumSpacing = 2; //minimum mesafe
 
 
-    public void TestThenSpawn()
+    private void Start()
+    {
+        InvokeRepeating("Spawn6", 180f, 360f);
+        InvokeRepeating("Spawn3", 0f, 180f);
+        InvokeRepeating("Spawn2", 0f, 120f);
+    }
+
+
+    private void Spawn6()
     {
         SpawnHunter();
-        
-
-  
     }
+
+    private void Spawn3()
+    {
+        SpawnBoar();
+        SpawnDeer();
+        SpawnRabbit();
+    }
+
+    private void Spawn2()
+    {
+        SpawnMushroom();
+        SpawnGrass();
+    }
+
+
 
     Vector3 GetRandomObjectPosition()
     {
-        TerrainData terrainData = GetComponent<Terrain>().terrainData;
+  
+        GameObject terrainObject = GameObject.FindWithTag("Terrain");
+        Terrain terrainComponent = terrainObject.GetComponent<Terrain>();
+        TerrainData terrainData = terrainComponent.terrainData;
+
+
+
         Vector3 randomPosition = new Vector3(Random.Range(0f, terrainData.size.x), 0f, Random.Range(0f, terrainData.size.z));
-        randomPosition.y = GetComponent<Terrain>().SampleHeight(randomPosition);
+        randomPosition.y = terrainComponent.SampleHeight(randomPosition);
         return randomPosition;
     }
 
@@ -55,7 +81,7 @@ public class SpawnCycle : MonoBehaviour
 
     void SpawnHunter ()
     {
-        if (hunter < 1){//limit
+        if (hunter < 1){
 
             Spawn(prefabs[0]);
         }
@@ -63,51 +89,67 @@ public class SpawnCycle : MonoBehaviour
 
     void SpawnBoar()
     {
-        if (boar < 4){//limit
+        if (boar < 4){
 
-            Spawn(prefabs[1]);
+            for (int i = 0; i < 2; i++)
+            {
+                Spawn(prefabs[1]);
+            }
         }
     }
 
     void SpawnDeer()
     {
-        if (deer < 4){//limit
+        if (deer < 4){
 
-            Spawn(prefabs[2]);
-            Spawn(prefabs[3]);
 
+            for (int i = 0; i < 2; i++)
+            {
+                Spawn(prefabs[2]);
+                Spawn(prefabs[3]);
+            }
         }
     }
 
 
     void SpawnRabbit()
     {
-        if(rabbit < 8){//limit
-            Spawn(prefabs[4]);
+        if(rabbit < 8){
+
+            for (int i = 0; i < 4; i++)
+            {
+                Spawn(prefabs[4]);
+            }
+           
         }
     }
 
     void SpawnMushroom()
     {
 
-        if (mushroom < 32){//limit
+        if (mushroom < 32){
 
-
-            Spawn(prefabs[5]);
-            Spawn(prefabs[6]);
-            Spawn(prefabs[7]);
-            Spawn(prefabs[8]);
-
+            for (int i = 0; i < 2; i++)
+            {
+                Spawn(prefabs[5]);
+                Spawn(prefabs[6]);
+                Spawn(prefabs[7]);
+                Spawn(prefabs[8]);
+            }
         }
     }
 
     void SpawnGrass()
     {
 
-        if (grass < 64){//limit
+        if (grass < 64){
 
-            Spawn(prefabs[9]);
-            Spawn(prefabs[10]);
+            for (int i = 0; i < 4; i++)
+            {
+                Spawn(prefabs[9]);
+                Spawn(prefabs[10]);
+            }
+            
         }
     }
 
