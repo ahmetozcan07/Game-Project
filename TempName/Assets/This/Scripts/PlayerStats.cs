@@ -15,7 +15,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
-        health = 80;
+        health = 100;
         hunger = 100;
         healthDecrease = 2;
         playerMovement = GetComponent<PlayerMovement>();

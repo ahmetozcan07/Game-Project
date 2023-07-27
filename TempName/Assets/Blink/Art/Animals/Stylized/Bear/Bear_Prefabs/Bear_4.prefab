@@ -1912,13 +1912,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7292658344771522932}
-  - component: {fileID: 3734775969355451150}
-  - component: {fileID: 5364059508481917010}
-  - component: {fileID: 2731920713774065720}
-  - component: {fileID: 8534744938988618949}
-  - component: {fileID: 4241397924325140687}
-  - component: {fileID: 6712978521374541809}
-  - component: {fileID: 8334547491629407123}
+  - component: {fileID: 3002996447057502951}
+  - component: {fileID: 820292089353380568}
+  - component: {fileID: 2675194667809856855}
+  - component: {fileID: 232771937298963108}
+  - component: {fileID: 439687837099736309}
+  - component: {fileID: 1418128188705966322}
+  - component: {fileID: 3705244604106350400}
   m_Layer: 0
   m_Name: Bear_4
   m_TagString: Untagged
@@ -1943,74 +1943,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 71.669, z: 0}
---- !u!95 &3734775969355451150
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7962199819078159310}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b7822eb5951163b48830b6d9bcbf48b4, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6b74c0471f91af34f8e98a4d46810410, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5364059508481917010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7962199819078159310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1022b8e96ffbfa946aa069126ff15ca1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  joystick: {fileID: 0}
-  speed: 0
-  walkSpeed: 0
-  sprintSpeed: 0
-  touchRegion: {fileID: 0}
---- !u!114 &2731920713774065720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7962199819078159310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba693ccb21be49e41ad0a445b81954d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  touchRegion: {fileID: 0}
-  damage: 0
---- !u!114 &8534744938988618949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7962199819078159310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b951198d67b44ae40bad22457112d2a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 0}
-  hungerBar: {fileID: 0}
-  health: 100
---- !u!136 &4241397924325140687
+--- !u!136 &3002996447057502951
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2033,28 +1966,28 @@ CapsuleCollider:
   m_Height: 2.6797125
   m_Direction: 2
   m_Center: {x: 0.0000000015668533, y: 0.8317336, z: 0.16014361}
---- !u!65 &6712978521374541809
-BoxCollider:
+--- !u!95 &820292089353380568
+Animator:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7962199819078159310}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.6, y: 1.8, z: 1.6}
-  m_Center: {x: 0, y: 1, z: 1.7}
---- !u!54 &8334547491629407123
+  m_Avatar: {fileID: 9000000, guid: b7822eb5951163b48830b6d9bcbf48b4, type: 3}
+  m_Controller: {fileID: 9100000, guid: 6b74c0471f91af34f8e98a4d46810410, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!54 &2675194667809856855
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2062,7 +1995,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7962199819078159310}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 600
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2079,8 +2012,69 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
+  m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &232771937298963108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962199819078159310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1022b8e96ffbfa946aa069126ff15ca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joystick: {fileID: 0}
+  touchRegion: {fileID: 0}
+  walkSpeed: 10
+  sprintSpeed: 20
+  speed: 0
+  isSprinting: 1
+  movement: {x: 0, y: 0, z: 0}
+--- !u!114 &439687837099736309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962199819078159310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba693ccb21be49e41ad0a445b81954d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touchRegion: {fileID: 0}
+  damage: 20
+--- !u!114 &1418128188705966322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962199819078159310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac1d599475a850409377a2c4deeb68b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3705244604106350400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962199819078159310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b951198d67b44ae40bad22457112d2a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
+  hungerBar: {fileID: 0}
+  health: 100
+  hunger: 100
 --- !u!1 &8002475675295336084
 GameObject:
   m_ObjectHideFlags: 0

@@ -1788,8 +1788,7 @@ MonoBehaviour:
   sensDistance: 2
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
-  attackCooldown: 3
+    m_Bits: 128
   damage: 10
 --- !u!195 &8433217817979419298
 NavMeshAgent:

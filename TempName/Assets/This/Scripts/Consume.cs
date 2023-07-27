@@ -1,3 +1,4 @@
+using Lean.Touch;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ public class ColliderObject
 public class Consume : MonoBehaviour
 {
     public List<ColliderObject> interactableObjects = new List<ColliderObject>();
+    [SerializeField] private RectTransform touchRegion;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -52,7 +54,25 @@ public class Consume : MonoBehaviour
 
         return closestObject;       
     }
-   
+
+    private void OnEnable()
+    {
+        LeanTouch.OnFingerTap += OnFingerDown;
+    }
+
+    private void OnDisable()
+    {
+        LeanTouch.OnFingerTap -= OnFingerDown;
+    }
+
+    private void OnFingerDown(LeanFinger finger)
+    {
+        if (RectTransformUtility.RectangleContainsScreenPoint(touchRegion, finger.ScreenPosition))
+        {
+            PerformActionForRegion();
+        }
+    }
+
     private void PerformActionForRegion() //tuþa basýldýðýnda yap
     {
         ColliderObject closestObject = CheckClosestObject();
