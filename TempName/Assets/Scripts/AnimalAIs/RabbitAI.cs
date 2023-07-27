@@ -7,10 +7,10 @@ public class RabbitAI : MonoBehaviour
 {
     Vector3[] patrolPoints = new Vector3[5]; // array of patrol points
     [SerializeField] private float sightDistance = 12f;
+    [SerializeField] private float sensDistance = 1f;
     public LayerMask playerLayer;
-    private float fleeDistance = 5f;
+    private float runningDistance = 5f;
     private Transform playerLastSeenAt;
-
     private NavMeshAgent navMeshAgent;
     private Animator animator;
     private int currentPatrolIndex = 0;
@@ -26,14 +26,11 @@ public class RabbitAI : MonoBehaviour
             patrolPoints[i] = new Vector3(0, 0, 0);
         }
         RandomPatrolPoints();
-
         // Walk to one of the patrol points
         if (patrolPoints.Length > 0)
         {
             navMeshAgent.SetDestination(patrolPoints[currentPatrolIndex]);
-            Debug.Log(patrolPoints[currentPatrolIndex] + " " + patrolPoints[1]);
         }
-
 
         Observable.EveryUpdate()
             .Subscribe(_ => ManageAnimations());
@@ -44,8 +41,6 @@ public class RabbitAI : MonoBehaviour
     private void PlayerSeen()
     {
         Vector3 rabbitPosition = transform.position;
-
-        // If not running, patrol
         if (!fleeing)
         {
             Patrol();
@@ -54,18 +49,24 @@ public class RabbitAI : MonoBehaviour
         {
             Flee(rabbitPosition);
         }
-
         // Detect player
         Vector3 rayDirection = transform.forward;
         RaycastHit hit;
-        if (Physics.Raycast(rabbitPosition, rayDirection, out hit, sightDistance, playerLayer))
+        Collider[] colliders = Physics.OverlapSphere(transform.position, sensDistance, playerLayer);
+        if (colliders.Length > 0)
+        {
+            playerLastSeenAt = colliders[0].transform;
+            Flee(rabbitPosition);
+            ManageAnimations();
+        }
+        else if (Physics.Raycast(rabbitPosition, rayDirection, out hit, sightDistance, playerLayer))
         {
             playerLastSeenAt = hit.transform;
             Flee(rabbitPosition);
-            fleeing = true;
             ManageAnimations();
         }
-        else if (fleeing && Vector3.Distance(transform.position, playerLastSeenAt.position) > 50f) // stop running if distance is high
+
+        if (fleeing && Vector3.Distance(transform.position, playerLastSeenAt.position) > 50f) // stop running if distance is high
         {
             //start patrolling again
             RandomPatrolPoints();
@@ -87,16 +88,17 @@ public class RabbitAI : MonoBehaviour
 
     private void Flee(Vector3 rabbitPosition)
     {
+        fleeing = true;
         Vector3 fleeDirection = transform.position - playerLastSeenAt.position;
         fleeDirection.y = 0f;
-        Vector3 fleePosition = rabbitPosition + fleeDirection.normalized * fleeDistance;
+        Vector3 fleePosition = rabbitPosition + fleeDirection.normalized * runningDistance;
         navMeshAgent.SetDestination(fleePosition);
     }
 
     IEnumerator IdleAtPatrolPoint()
     {
         waiting = true;
-        yield return new WaitForSeconds(Random.Range(6,13));
+        yield return new WaitForSeconds(Random.Range(6, 13));
         waiting = false;
         navMeshAgent.SetDestination(patrolPoints[currentPatrolIndex]);
     }
@@ -105,8 +107,8 @@ public class RabbitAI : MonoBehaviour
     {
         for (int i = 0; i < patrolPoints.Length; i++)
         {
-            patrolPoints[i] = new Vector3(transform.position.x + Random.Range(6, 32), 0,
-                transform.position.z + Random.Range(6, 32));
+            patrolPoints[i] = new Vector3(transform.position.x + (Random.Range(0, 2) * 2 - 1) * Random.Range(6, 32), 0,
+                transform.position.z + (Random.Range(0, 2) * 2 - 1) * Random.Range(6, 32));
         }
     }
 

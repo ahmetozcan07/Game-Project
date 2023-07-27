@@ -3,7 +3,7 @@ using UnityEngine;
 public class HealthPoints : MonoBehaviour
 {
     [SerializeField] private float maxHealth;
-    public float health;
+    [HideInInspector] public float health;
 
     void Start()
     {
