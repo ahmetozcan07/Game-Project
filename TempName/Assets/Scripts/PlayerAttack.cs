@@ -6,10 +6,10 @@ using System.Collections.Generic;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] private RectTransform touchRegion;
+    [SerializeField] private float damage;
     private Animator animator;
     private PlayerMovement playerMovement;
-
-    [SerializeField] private float damage;
+    private PlayerStats playerStats;
     private List<GameObject> collidingObjects = new List<GameObject>();
     private bool attacking = false;
     private bool didAttack = false;
@@ -19,6 +19,7 @@ public class PlayerAttack : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
+        playerStats = GetComponent<PlayerStats>();
     }
     private void OnEnable()
     {
@@ -57,7 +58,15 @@ public class PlayerAttack : MonoBehaviour
         yield return new WaitForSeconds(attackCooldown);
         attacking = false;
         didAttack = false;
-        playerMovement.speed = playerMovement.walkSpeed;
+        if(playerMovement.isSprinting)
+        {
+            playerMovement.speed = playerMovement.sprintSpeed;
+        }
+        else
+        {
+            playerMovement.speed = playerMovement.walkSpeed;
+        }
+
     }
 
 
@@ -75,6 +84,21 @@ public class PlayerAttack : MonoBehaviour
                 if (obj != null)
                 {
                     Debug.Log("damage done");
+                    if (obj.GetComponent<HealthPoints>().health <= damage)
+                    {
+                        if (obj.layer == 8) // rabbit
+                        {
+                            playerStats.hunger += 10;
+                        }
+                        else if (obj.layer == 9) // deer
+                        {
+                            playerStats.hunger += 40;
+                        }
+                        else if (obj.layer == 10) // boar
+                        {
+                            playerStats.hunger += 40;
+                        }
+                    }
                     obj.GetComponent<HealthPoints>().TakeDamage(damage);
                     didAttack = true;
                 }

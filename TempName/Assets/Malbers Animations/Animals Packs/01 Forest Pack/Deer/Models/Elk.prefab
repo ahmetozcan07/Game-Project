@@ -897,7 +897,7 @@ GameObject:
   - component: {fileID: 6730737582658951602}
   - component: {fileID: 1791867103142396683}
   - component: {fileID: 2825494097011847698}
-  m_Layer: 20
+  m_Layer: 9
   m_Name: Elk
   m_TagString: Animal
   m_Icon: {fileID: 0}
@@ -955,6 +955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 80
+  health: 0
 --- !u!114 &5540479964509867375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -972,6 +973,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   attackCooldown: 5
+  damage: 0
 --- !u!195 &-7984866997273659113
 NavMeshAgent:
   m_ObjectHideFlags: 0

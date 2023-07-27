@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 1635628856065678237}
   - component: {fileID: 8635805580932751653}
   - component: {fileID: 382765961906781744}
-  m_Layer: 20
+  m_Layer: 8
   m_Name: Rabbit PA White Spots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 20
+  health: 0
 --- !u!114 &1635628856065678237
 MonoBehaviour:
   m_ObjectHideFlags: 0

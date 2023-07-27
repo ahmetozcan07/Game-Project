@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthPoints : MonoBehaviour
 {
     [SerializeField] private float maxHealth;
-    private float health;
+    public float health;
 
     void Start()
     {

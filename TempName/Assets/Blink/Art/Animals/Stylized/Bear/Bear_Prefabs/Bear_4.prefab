@@ -1915,6 +1915,7 @@ GameObject:
   - component: {fileID: 3734775969355451150}
   - component: {fileID: 5364059508481917010}
   - component: {fileID: 2731920713774065720}
+  - component: {fileID: 8534744938988618949}
   - component: {fileID: 4241397924325140687}
   - component: {fileID: 6712978521374541809}
   - component: {fileID: 8334547491629407123}
@@ -1994,6 +1995,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   touchRegion: {fileID: 0}
   damage: 0
+--- !u!114 &8534744938988618949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962199819078159310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b951198d67b44ae40bad22457112d2a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
+  hungerBar: {fileID: 0}
+  health: 100
 --- !u!136 &4241397924325140687
 CapsuleCollider:
   m_ObjectHideFlags: 0

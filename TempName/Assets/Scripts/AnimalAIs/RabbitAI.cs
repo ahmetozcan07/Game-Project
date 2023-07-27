@@ -43,7 +43,6 @@ public class RabbitAI : MonoBehaviour
 
     private void PlayerSeen()
     {
-        // Position of the rabbit
         Vector3 rabbitPosition = transform.position;
 
         // If not running, patrol
@@ -62,18 +61,17 @@ public class RabbitAI : MonoBehaviour
         if (Physics.Raycast(rabbitPosition, rayDirection, out hit, sightDistance, playerLayer))
         {
             playerLastSeenAt = hit.transform;
-            // Player seen, run
-            fleeing = true;
             Flee(rabbitPosition);
+            fleeing = true;
             ManageAnimations();
         }
         else if (fleeing && Vector3.Distance(transform.position, playerLastSeenAt.position) > 50f) // stop running if distance is high
         {
             //start patrolling again
             RandomPatrolPoints();
-            fleeing = false;
             transform.rotation = Quaternion.Euler(0,
                 Quaternion.LookRotation(playerLastSeenAt.position).eulerAngles.y, 0);
+            fleeing = false;
         }
     }
 
@@ -82,7 +80,6 @@ public class RabbitAI : MonoBehaviour
         // Walk to next patrol point when arrived at one of patrol points
         if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f && !waiting && !fleeing)
         {
-            navMeshAgent.updateRotation = false;
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
             StartCoroutine(IdleAtPatrolPoint());
         }
@@ -101,7 +98,6 @@ public class RabbitAI : MonoBehaviour
         waiting = true;
         yield return new WaitForSeconds(Random.Range(6,13));
         waiting = false;
-        navMeshAgent.updateRotation = true;
         navMeshAgent.SetDestination(patrolPoints[currentPatrolIndex]);
     }
 
@@ -124,15 +120,15 @@ public class RabbitAI : MonoBehaviour
         }
         else if (fleeing)
         {
-            animator.SetBool("isRunning", true);
             animator.SetBool("isWalking", false);
             animator.SetBool("Idle", false);
+            animator.SetBool("isRunning", true);
         }
         else
         {
-            animator.SetBool("isWalking", true);
             animator.SetBool("isRunning", false);
             animator.SetBool("Idle", false);
+            animator.SetBool("isWalking", true);
         }
     }
 }

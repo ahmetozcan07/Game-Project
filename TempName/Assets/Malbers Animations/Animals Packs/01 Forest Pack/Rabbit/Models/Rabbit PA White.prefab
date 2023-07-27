@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 8245453857684514520}
   - component: {fileID: 6912098365809599539}
   - component: {fileID: 3298842344789979011}
-  m_Layer: 20
+  m_Layer: 8
   m_Name: Rabbit PA White
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,6 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 20
+  health: 0
 --- !u!114 &8245453857684514520
 MonoBehaviour:
   m_ObjectHideFlags: 0
