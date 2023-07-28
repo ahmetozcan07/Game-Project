@@ -951,6 +951,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 80
+<<<<<<< Updated upstream:TempName/Assets/Malbers Animations/Animals Packs/01 Forest Pack/Deer/Models/Elk.prefab
+=======
+  health: 0
+  isDead: 0
+  isEdible: 0
+--- !u!114 &5540479964509867375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469362139191444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d9900ba7c210ae40badbf03dea27ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sightDistance: 12
+  sensDistance: 4
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!195 &-7984866997273659113
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469362139191444}
+  m_Enabled: 1
+  m_AgentTypeID: -1923039037
+  m_Radius: 0.5
+  m_Speed: 6
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+>>>>>>> Stashed changes:TempName/Assets/This/Prefabs/Deer/Elk.prefab
 --- !u!65 &8950219855019401786
 BoxCollider:
   m_ObjectHideFlags: 0

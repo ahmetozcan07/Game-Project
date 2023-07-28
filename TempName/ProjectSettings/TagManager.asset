@@ -13,6 +13,9 @@ TagManager:
   - M4
   - G1
   - G2
+  - MEAT
+  - Bridge
+  - Canvas
   layers:
   - Default
   - TransparentFX
@@ -22,9 +25,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - Rabbit
+  - Deer
+  - Boar
   - 
   - 
   - 
