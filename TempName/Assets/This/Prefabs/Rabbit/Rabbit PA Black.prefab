@@ -75,8 +75,10 @@ GameObject:
   - component: {fileID: 4448383524237486}
   - component: {fileID: 95398319272567824}
   - component: {fileID: -7375657922548096611}
+  - component: {fileID: 4860765862105878732}
+  - component: {fileID: 8043224122286610173}
   - component: {fileID: 3358196487365279416}
-  m_Layer: 20
+  m_Layer: 8
   m_Name: Rabbit PA Black
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,10 +93,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1081179059846508}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.15, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4727575083198714855}
   - {fileID: 4825426029425714}
   - {fileID: 4632427798826758}
   - {fileID: 6020175731758611651}
@@ -135,6 +138,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 20
+  health: 0
+  isDead: 0
+  isEdible: 0
+--- !u!114 &4860765862105878732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081179059846508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c25e9b4665ffed4aa721effeb454ff1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sightDistance: 12
+  sensDistance: 3
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!195 &8043224122286610173
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081179059846508}
+  m_Enabled: 1
+  m_AgentTypeID: -1372625422
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!136 &3358196487365279416
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -154,10 +199,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.14147136
   m_Height: 0.5
   m_Direction: 2
-  m_Center: {x: 0, y: 0.18, z: 0.12}
+  m_Center: {x: 0, y: 0.14, z: 0.120000005}
 --- !u!1 &1111399501934360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1344,3 +1389,56 @@ Transform:
   m_Father: {fileID: 4448383524237486}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8380010699925124865
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4727575083198714855}
+  - component: {fileID: 2438449317651537400}
+  m_Layer: 0
+  m_Name: Interaction
+  m_TagString: MEAT
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4727575083198714855
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380010699925124865}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4448383524237486}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &2438449317651537400
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380010699925124865}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
