@@ -49,6 +49,12 @@ public class BoarAI : MonoBehaviour
 
     private void PlayerSeen()
     {
+        if (healthPoints.isDead)
+        {
+            navMeshAgent.isStopped = true;
+            ManageAnimations();
+            StartCoroutine(Die());
+        }
         Vector3 boarPosition = transform.position;
         if (!fleeing)
         {
@@ -60,7 +66,7 @@ public class BoarAI : MonoBehaviour
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (colliders.Length > 0)
         {
-            playerLastSeenAt = colliders[0].transform;
+            playerLastSeenAt = colliders[0].gameObject.transform;
             if (healthPoints.health < 40)
             {
                 Flee(boarPosition);
@@ -175,6 +181,11 @@ public class BoarAI : MonoBehaviour
                 transform.position.z + (Random.Range(0, 2) * 2 - 1) * Random.Range(6, 32));
         }
     }
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(1);
+        healthPoints.Edible();
+    }
 
     private void ManageAnimations()
     {
@@ -189,6 +200,14 @@ public class BoarAI : MonoBehaviour
             animator.SetBool("isWalking", false);
             animator.SetBool("Idle", false);
             animator.SetBool("isRunning", true);
+        }
+        else if (healthPoints.isDead)
+        {
+            foreach (AnimatorControllerParameter p in animator.parameters)
+            {
+                animator.SetBool(p.name, false);
+            }
+            animator.SetBool("isDead", true);
         }
         else
         {

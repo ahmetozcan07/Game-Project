@@ -94,6 +94,7 @@ public class SpawnCycle : MonoBehaviour
             for (int i = 0; i < 2; i++)
             {
                 Spawn(prefabs[1]);
+                Spawn(prefabs[2]);
             }
         }
     }
@@ -101,12 +102,10 @@ public class SpawnCycle : MonoBehaviour
     void SpawnDeer()
     {
         if (deer < 4){
-
-
             for (int i = 0; i < 2; i++)
             {
-                Spawn(prefabs[2]);
                 Spawn(prefabs[3]);
+                Spawn(prefabs[4]);
             }
         }
     }
@@ -115,12 +114,12 @@ public class SpawnCycle : MonoBehaviour
     void SpawnRabbit()
     {
         if(rabbit < 8){
-
-            for (int i = 0; i < 4; i++)
-            {
-                Spawn(prefabs[4]);
-            }
-           
+            Spawn(prefabs[5]);
+            Spawn(prefabs[6]);
+            Spawn(prefabs[7]);
+            Spawn(prefabs[8]);
+            Spawn(prefabs[9]);
+            Spawn(prefabs[10]);
         }
     }
 
@@ -131,10 +130,10 @@ public class SpawnCycle : MonoBehaviour
 
             for (int i = 0; i < 2; i++)
             {
-                Spawn(prefabs[5]);
-                Spawn(prefabs[6]);
-                Spawn(prefabs[7]);
-                Spawn(prefabs[8]);
+                Spawn(prefabs[11]);
+                Spawn(prefabs[12]);
+                Spawn(prefabs[13]);
+                Spawn(prefabs[14]);
             }
         }
     }
@@ -146,8 +145,8 @@ public class SpawnCycle : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                Spawn(prefabs[9]);
-                Spawn(prefabs[10]);
+                Spawn(prefabs[15]);
+                Spawn(prefabs[16]);
             }
             
         }

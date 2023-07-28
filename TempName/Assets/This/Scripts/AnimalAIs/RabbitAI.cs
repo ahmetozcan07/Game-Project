@@ -13,6 +13,7 @@ public class RabbitAI : MonoBehaviour
     private Transform playerLastSeenAt;
     private NavMeshAgent navMeshAgent;
     private Animator animator;
+    private HealthPoints healthPoints;
     private int currentPatrolIndex = 0;
     private bool fleeing = false;
     private bool waiting = false;
@@ -21,6 +22,7 @@ public class RabbitAI : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        healthPoints = GetComponent<HealthPoints>();
         for (int i = 0; i < patrolPoints.Length; i++)
         {
             patrolPoints[i] = new Vector3(0, 0, 0);
@@ -40,6 +42,12 @@ public class RabbitAI : MonoBehaviour
 
     private void PlayerSeen()
     {
+        if (healthPoints.isDead)
+        {
+            navMeshAgent.isStopped = true;
+            ManageAnimations();
+            StartCoroutine(Die());
+        }
         Vector3 rabbitPosition = transform.position;
         if (!fleeing)
         {
@@ -55,7 +63,7 @@ public class RabbitAI : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position, sensDistance, playerLayer);
         if (colliders.Length > 0)
         {
-            playerLastSeenAt = colliders[0].transform;
+            playerLastSeenAt = colliders[0].gameObject.transform;
             Flee(rabbitPosition);
             ManageAnimations();
         }
@@ -112,6 +120,12 @@ public class RabbitAI : MonoBehaviour
         }
     }
 
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(1);
+        healthPoints.Edible();
+    }
+
     private void ManageAnimations()
     {
         if (waiting)
@@ -125,6 +139,14 @@ public class RabbitAI : MonoBehaviour
             animator.SetBool("isWalking", false);
             animator.SetBool("Idle", false);
             animator.SetBool("isRunning", true);
+        }
+        else if (healthPoints.isDead)
+        {
+            foreach (AnimatorControllerParameter p in animator.parameters)
+            {
+                animator.SetBool(p.name, false);
+            }
+            animator.SetBool("isDead", true);
         }
         else
         {

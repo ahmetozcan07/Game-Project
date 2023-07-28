@@ -1872,10 +1872,16 @@ MonoBehaviour:
   grass: 0
   prefabs:
   - {fileID: 8090977812691439798, guid: b33779749ef8c9a4585ee36bd56e171b, type: 3}
-  - {fileID: 4724581131682426967, guid: 83dd1eebb3a057f48a91dea904ef5de0, type: 3}
-  - {fileID: 2017479167876214311, guid: 9b5f2e0eb60e3c143b3e7060f1db42cc, type: 3}
-  - {fileID: 8210780514104883433, guid: 7e9f3f9b9e303944b991ef9f37905fc1, type: 3}
-  - {fileID: 1783319706756141023, guid: d5b2849ab97832141af445311f84ada5, type: 3}
+  - {fileID: 1833125029741782, guid: f7e075a8faf17e445900bdf2f5608f1e, type: 3}
+  - {fileID: 1833125029741782, guid: f1d9e1c843c92d8429a1d41d353f46e8, type: 3}
+  - {fileID: 1827988484473126, guid: b58846aead748844a8311f61b2a6985f, type: 3}
+  - {fileID: 1469362139191444, guid: 42a96e9e197d85c4caab5a7788fcf780, type: 3}
+  - {fileID: 1955119951743686, guid: 47a4baba56e957f40ba52dc00ba47a44, type: 3}
+  - {fileID: 1081179059846508, guid: cd54ae1a5c990b248aa7c2c82614e99e, type: 3}
+  - {fileID: 1843596818345988, guid: 5b0707a050c49f447bcad30eaa0a3929, type: 3}
+  - {fileID: 1335745780718190, guid: 01173114f5c6b34448f88a989cb04b6e, type: 3}
+  - {fileID: 1143616314940228, guid: 3eb20b2c600e3b242bb48b627183421e, type: 3}
+  - {fileID: 1182882288476588, guid: 967306bb37ff8b14099da41fa0b2773c, type: 3}
   - {fileID: 5908144835002338970, guid: 3649780961ee77c439b20a2350f4d1e8, type: 3}
   - {fileID: 5083212096378201613, guid: 48ced9d239162084a81b0604e0377743, type: 3}
   - {fileID: 1528719998163876490, guid: aaaac20d946c7704889b9370d28ae6ad, type: 3}
@@ -2421,7 +2427,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1378825084}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3272,7 +3278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1866144527
 Transform:
   m_ObjectHideFlags: 0
@@ -3442,6 +3448,7 @@ MonoBehaviour:
   scale: 10
   offsetX: 100
   offsetY: 100
+  NavMesh: {fileID: 1378825084}
 --- !u!154 &1965795552
 TerrainCollider:
   m_ObjectHideFlags: 0

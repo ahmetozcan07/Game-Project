@@ -193,7 +193,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4365377487082654
 Transform:
   m_ObjectHideFlags: 0
@@ -895,8 +895,6 @@ GameObject:
   - component: {fileID: 8950219855019401786}
   - component: {fileID: 6715612230884057822}
   - component: {fileID: 6730737582658951602}
-  - component: {fileID: 1791867103142396683}
-  - component: {fileID: 2825494097011847698}
   m_Layer: 9
   m_Name: Elk
   m_TagString: Animal
@@ -916,6 +914,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4456562011694807070}
   - {fileID: 4152325271227702}
   - {fileID: 6737538141079941547}
   m_Father: {fileID: 0}
@@ -956,6 +955,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 80
   health: 0
+  isDead: 0
+  isEdible: 0
 --- !u!114 &5540479964509867375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,11 +970,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightDistance: 12
+  sensDistance: 4
   playerLayer:
     serializedVersion: 2
-    m_Bits: 128
-  attackCooldown: 5
-  damage: 0
+    m_Bits: 0
 --- !u!195 &-7984866997273659113
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1059,48 +1059,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.2
   m_Center: {x: 0, y: 1.2, z: 1.22}
---- !u!65 &1791867103142396683
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1469362139191444}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.51, y: 1.2, z: 1}
-  m_Center: {x: 0, y: 0.8, z: -0.8}
---- !u!65 &2825494097011847698
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1469362139191444}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.51, y: 1, z: 1.1}
-  m_Center: {x: 0, y: 1.3, z: 2.1}
 --- !u!1 &1473871634801442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,7 +1479,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 796847d5def7e16428c31bce5ba73cb7, type: 2}
+  - {fileID: 2100000, guid: 02c91d4f6bae9f349894b134fa7c354f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2115,6 +2073,59 @@ Transform:
   m_Father: {fileID: 4108139324442858}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5684920949016786033
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4456562011694807070}
+  - component: {fileID: 4879473219955546865}
+  m_Layer: 0
+  m_Name: Interaction
+  m_TagString: MEAT
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4456562011694807070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5684920949016786033}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0.759}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4966743157725986}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &4879473219955546865
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5684920949016786033}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7476678689144734559
 GameObject:
   m_ObjectHideFlags: 0
