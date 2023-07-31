@@ -6,8 +6,8 @@ using UnityEngine.AI;
 public class RabbitAI : MonoBehaviour
 {
     Vector3[] patrolPoints = new Vector3[5]; // array of patrol points
-    [SerializeField] private float sightDistance = 12f;
-    [SerializeField] private float sensDistance = 1f;
+    [SerializeField] private float sightDistance;
+    [SerializeField] private float sensDistance;
     public LayerMask playerLayer;
     private float runningDistance = 5f;
     private Transform playerLastSeenAt;
@@ -35,9 +35,9 @@ public class RabbitAI : MonoBehaviour
         }
 
         Observable.EveryUpdate()
-            .Subscribe(_ => ManageAnimations());
+            .Subscribe(_ => ManageAnimations()).AddTo(this);
         Observable.EveryUpdate()
-            .Subscribe(_ => PlayerSeen());
+            .Subscribe(_ => PlayerSeen()).AddTo(this);
     }
 
     private void PlayerSeen()

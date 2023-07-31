@@ -970,10 +970,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightDistance: 12
-  sensDistance: 4
+  sensDistance: 6
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
 --- !u!195 &-7984866997273659113
 NavMeshAgent:
   m_ObjectHideFlags: 0

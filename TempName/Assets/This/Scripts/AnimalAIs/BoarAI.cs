@@ -7,12 +7,12 @@ using UnityEngine.UIElements;
 public class BoarAI : MonoBehaviour
 {
     Vector3[] patrolPoints = new Vector3[5]; // array of patrol points
-    [SerializeField] private float sightDistance = 12f;
-    [SerializeField] private float sensDistance = 2f;
+    [SerializeField] private float sightDistance;
+    [SerializeField] private float sensDistance;
     public LayerMask playerLayer;
     private float runningDistance = 5f;
     private Transform playerLastSeenAt;
-    [SerializeField] private float attackCooldown = 3f;
+    [SerializeField] private float attackCooldown;
     [SerializeField] private float damage;
     private NavMeshAgent navMeshAgent;
     private Animator animator;
@@ -42,9 +42,9 @@ public class BoarAI : MonoBehaviour
         }
 
         Observable.EveryUpdate()
-            .Subscribe(_ => ManageAnimations());
+            .Subscribe(_ => ManageAnimations()).AddTo(this);
         Observable.EveryUpdate()
-            .Subscribe(_ => PlayerSeen());
+            .Subscribe(_ => PlayerSeen()).AddTo(this);
     }
 
     private void PlayerSeen()
@@ -63,7 +63,6 @@ public class BoarAI : MonoBehaviour
         Vector3 rayDirection = transform.forward;
         RaycastHit hit;
         Collider[] colliders = Physics.OverlapSphere(transform.position, sensDistance, playerLayer);
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (colliders.Length > 0)
         {
             playerLastSeenAt = colliders[0].gameObject.transform;
@@ -71,18 +70,17 @@ public class BoarAI : MonoBehaviour
             {
                 Flee(boarPosition);
             }
-            else if (withinAttackRange)
-            {
-                if (readyForAttack)
-                {
-                    Attack();
-                    Debug.Log("saldýrýyor: -=================================================> ");
-                }
-            }
-            else if (!withinAttackRange)
-            {
-                Chase(playerLastSeenAt.position);
-            }
+            //else if (withinAttackRange)
+            //{
+            //    if (readyForAttack)
+            //    {
+            //        Attack();
+            //    }
+            //}
+            //else if (!withinAttackRange)
+            //{
+            //    Chase(playerLastSeenAt.position);
+            //}
             ManageAnimations();
         }
         else if (Physics.Raycast(boarPosition, rayDirection, out hit, sightDistance, playerLayer))
@@ -92,22 +90,19 @@ public class BoarAI : MonoBehaviour
             {
                 Flee(boarPosition);
             }
-            else if (withinAttackRange)
-            {
-                if (readyForAttack)
-                {
-                    Attack();
-                    Debug.Log("saldýrýyor: -=================================================> ");
-                }
-            }
-            else if (!withinAttackRange)
-            {
-                Chase(playerLastSeenAt.position);
-            }
+            //else if (withinAttackRange)
+            //{
+            //    if (readyForAttack)
+            //    {
+            //        Attack();
+            //    }
+            //}
+            //else if (!withinAttackRange)
+            //{
+            //    Chase(playerLastSeenAt.position);
+            //}
             ManageAnimations();
         }
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (fleeing && Vector3.Distance(transform.position, playerLastSeenAt.position) > 50f) // stop running if distance is high
         {
             //start patrolling again
@@ -138,7 +133,6 @@ public class BoarAI : MonoBehaviour
 
     private void Chase(Vector3 playerPosition)
     {
-        Debug.Log("kovalýyor");
         navMeshAgent.SetDestination(playerPosition);
         ManageAnimations();
     }

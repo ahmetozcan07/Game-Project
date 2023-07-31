@@ -1788,10 +1788,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightDistance: 14
-  sensDistance: 5
+  sensDistance: 7
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   attackCooldown: 3
   damage: 10
 --- !u!195 &1316252857263240542
@@ -2224,7 +2224,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 2.9
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5808592844092130383
 GameObject:
