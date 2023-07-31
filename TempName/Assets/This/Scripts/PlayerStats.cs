@@ -21,7 +21,7 @@ public class PlayerStats : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
         Observable.EveryUpdate()
-            .Subscribe(_ => UpdateStats());
+            .Subscribe(_ => UpdateStats()).AddTo(this);
     }
 
     private void UpdateStats()
@@ -73,14 +73,30 @@ public class PlayerStats : MonoBehaviour
     {
         health -= damage * Time.deltaTime;
     }
+    public void GetHealed(float healing)
+    {
+        health += healing * Time.deltaTime;
+    }
+    public void GetFed(float food)
+    {
+        hunger += food * Time.deltaTime;
+    }
+
     private void Die()
     {
         for(int i = 0; i < animator.parameterCount; i++)
         {
             animator.SetBool(i, false);
         }
+        StartCoroutine(DieAnim());
+    }
+
+    IEnumerator DieAnim()
+    {
+        playerMovement.speed = 0;
         animator.SetBool("Die", true);
-        // game over
-        gameObject.SetActive(false);
+        yield return new WaitForSeconds(2);
+
+        //menu geç
     }
 }

@@ -199,7 +199,7 @@ public class Consume : MonoBehaviour
         playerMovement.speed = 0f;
         yield return new WaitForSeconds(1.5f);
         animator.SetBool("Eat", false);
-        Destroy(obj);
+
         if (playerMovement.isSprinting)
         {
             playerMovement.speed = playerMovement.sprintSpeed;

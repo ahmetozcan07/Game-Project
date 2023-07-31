@@ -17,7 +17,7 @@ public class SpawnCycle : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("Spawn6", 180f, 360f);
+        InvokeRepeating("Spawn6", 0f, 360f);
         InvokeRepeating("Spawn3", 0f, 180f);
         InvokeRepeating("Spawn2", 0f, 120f);
     }

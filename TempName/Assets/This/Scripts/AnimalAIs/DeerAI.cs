@@ -6,8 +6,8 @@ using UnityEngine.AI;
 public class DeerAI : MonoBehaviour
 {
     Vector3[] patrolPoints = new Vector3[6]; // array of patrol points
-    [SerializeField] private float sightDistance = 12f;
-    [SerializeField] private float sensDistance = 2f;
+    [SerializeField] private float sightDistance;
+    [SerializeField] private float sensDistance;
     public LayerMask playerLayer;
     private float runningDistance = 5f;
     private Transform playerLastSeenAt;
@@ -35,9 +35,9 @@ public class DeerAI : MonoBehaviour
         }
 
         Observable.EveryUpdate()
-            .Subscribe(_ => ManageAnimations());
+            .Subscribe(_ => ManageAnimations()).AddTo(this);
         Observable.EveryUpdate()
-            .Subscribe(_ => PlayerSeen());
+            .Subscribe(_ => PlayerSeen()).AddTo(this);
     }
 
     private void PlayerSeen()
@@ -70,12 +70,6 @@ public class DeerAI : MonoBehaviour
         else if (Physics.Raycast(deerPosition, rayDirection, out hit, sightDistance, playerLayer))
         {
             playerLastSeenAt = hit.transform;
-            Flee(deerPosition);
-            ManageAnimations();
-        }
-        else if (colliders.Length > 0)
-        {
-            playerLastSeenAt = colliders[0].transform;
             Flee(deerPosition);
             ManageAnimations();
         }
