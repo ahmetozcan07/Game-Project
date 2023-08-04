@@ -1242,8 +1242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c25e9b4665ffed4aa721effeb454ff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sightDistance: 12
-  sensDistance: 5
+  sensDistance: 11
   playerLayer:
     serializedVersion: 2
     m_Bits: 8

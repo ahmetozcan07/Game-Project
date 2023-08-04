@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class RabbitAI : MonoBehaviour
 {
     Vector3[] patrolPoints = new Vector3[5]; // array of patrol points
-    [SerializeField] private float sightDistance;
     [SerializeField] private float sensDistance;
     public LayerMask playerLayer;
     private float runningDistance = 5f;
@@ -37,16 +36,14 @@ public class RabbitAI : MonoBehaviour
         Observable.EveryUpdate()
             .Subscribe(_ => ManageAnimations()).AddTo(this);
         Observable.EveryUpdate()
-            .Subscribe(_ => PlayerSeen()).AddTo(this);
+            .Subscribe(_ => AILifeCycle()).AddTo(this);
     }
 
-    private void PlayerSeen()
+    private void AILifeCycle()
     {
         if (healthPoints.isDead)
         {
             navMeshAgent.isStopped = true;
-            ManageAnimations();
-            StartCoroutine(Die());
         }
         Vector3 rabbitPosition = transform.position;
         if (!fleeing)
@@ -57,30 +54,12 @@ public class RabbitAI : MonoBehaviour
         {
             Flee(rabbitPosition);
         }
-        // Detect player
-        Vector3 rayDirection = transform.forward;
-        RaycastHit hit;
         Collider[] colliders = Physics.OverlapSphere(transform.position, sensDistance, playerLayer);
         if (colliders.Length > 0)
         {
             playerLastSeenAt = colliders[0].gameObject.transform;
             Flee(rabbitPosition);
             ManageAnimations();
-        }
-        else if (Physics.Raycast(rabbitPosition, rayDirection, out hit, sightDistance, playerLayer))
-        {
-            playerLastSeenAt = hit.transform;
-            Flee(rabbitPosition);
-            ManageAnimations();
-        }
-
-        if (fleeing && Vector3.Distance(transform.position, playerLastSeenAt.position) > 50f) // stop running if distance is high
-        {
-            //start patrolling again
-            RandomPatrolPoints();
-            transform.rotation = Quaternion.Euler(0,
-                Quaternion.LookRotation(playerLastSeenAt.position).eulerAngles.y, 0);
-            fleeing = false;
         }
     }
 
@@ -101,6 +80,15 @@ public class RabbitAI : MonoBehaviour
         fleeDirection.y = 0f;
         Vector3 fleePosition = rabbitPosition + fleeDirection.normalized * runningDistance;
         navMeshAgent.SetDestination(fleePosition);
+
+        if (fleeing && Vector3.Distance(transform.position, playerLastSeenAt.position) > 50f) // stop running if distance is high
+        {
+            //start patrolling again
+            RandomPatrolPoints();
+            transform.rotation = Quaternion.Euler(0,
+                Quaternion.LookRotation(playerLastSeenAt.position).eulerAngles.y, 0);
+            fleeing = false;
+        }
     }
 
     IEnumerator IdleAtPatrolPoint()
@@ -120,12 +108,6 @@ public class RabbitAI : MonoBehaviour
         }
     }
 
-    IEnumerator Die()
-    {
-        yield return new WaitForSeconds(1);
-        healthPoints.Edible();
-    }
-
     private void ManageAnimations()
     {
         if (waiting)
@@ -139,14 +121,6 @@ public class RabbitAI : MonoBehaviour
             animator.SetBool("isWalking", false);
             animator.SetBool("Idle", false);
             animator.SetBool("isRunning", true);
-        }
-        else if (healthPoints.isDead)
-        {
-            foreach (AnimatorControllerParameter p in animator.parameters)
-            {
-                animator.SetBool(p.name, false);
-            }
-            animator.SetBool("isDead", true);
         }
         else
         {
