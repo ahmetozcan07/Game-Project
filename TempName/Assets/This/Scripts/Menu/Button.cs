@@ -39,8 +39,10 @@ public class Button : MonoBehaviour
 
     public void HideEndPanel()
     {
+
         endPanel.gameObject.SetActive(false);
         mainMenu.gameObject.SetActive(true);
+
     }
 
 

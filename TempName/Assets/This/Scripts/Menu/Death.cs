@@ -9,6 +9,7 @@ public class Death : MonoBehaviour
     public Transform mainMenu;
     public Transform loadScreen;
 
+
     void Start()
     {
 
