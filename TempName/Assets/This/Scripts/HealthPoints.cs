@@ -1,11 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthPoints : MonoBehaviour
 {
     [SerializeField] private float maxHealth;
-    private float health;
+    [HideInInspector] public float health;
+    [HideInInspector] public bool isDead = false;
+    [HideInInspector] public bool isEdible = false;
+
 
     void Start()
     {
@@ -17,12 +18,12 @@ public class HealthPoints : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Die();
+            isDead = true;
         }
     }
 
-    public void Die()
+    public void Edible()
     {
-        Destroy(gameObject);    
+        isEdible = true;
     }
 }

@@ -17,7 +17,7 @@ public class SpawnCycle : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("Spawn6", 180f, 360f);
+        InvokeRepeating("Spawn6", 0f, 360f);
         InvokeRepeating("Spawn3", 0f, 180f);
         InvokeRepeating("Spawn2", 0f, 120f);
     }
@@ -84,7 +84,6 @@ public class SpawnCycle : MonoBehaviour
         if (hunter < 1){
 
             Spawn(prefabs[0]);
-            hunter++;
         }
     }
 
@@ -95,10 +94,8 @@ public class SpawnCycle : MonoBehaviour
             for (int i = 0; i < 2; i++)
             {
                 Spawn(prefabs[1]);
-                Spawn(prefabs[2]);     
+                Spawn(prefabs[2]);
             }
-
-            boar = boar + 4;
         }
     }
 
@@ -110,8 +107,6 @@ public class SpawnCycle : MonoBehaviour
                 Spawn(prefabs[3]);
                 Spawn(prefabs[4]);
             }
-
-            deer = deer + 4;
         }
     }
 
@@ -125,8 +120,6 @@ public class SpawnCycle : MonoBehaviour
             Spawn(prefabs[8]);
             Spawn(prefabs[9]);
             Spawn(prefabs[10]);
-
-            rabbit = rabbit + 6;
         }
     }
 
@@ -142,8 +135,6 @@ public class SpawnCycle : MonoBehaviour
                 Spawn(prefabs[13]);
                 Spawn(prefabs[14]);
             }
-
-            mushroom = mushroom + 8;
         }
     }
 
@@ -157,9 +148,7 @@ public class SpawnCycle : MonoBehaviour
                 Spawn(prefabs[15]);
                 Spawn(prefabs[16]);
             }
-
-            grass = grass + 8;
-
+            
         }
     }
 

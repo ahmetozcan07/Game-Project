@@ -1,13 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
-<<<<<<< Updated upstream
-    private float health = 100;
-    private float hunger = 100;
-=======
     [SerializeField] private Image healthBar;
     [SerializeField] private Image hungerBar;
     [HideInInspector] public float health = 100;
@@ -24,7 +21,7 @@ public class PlayerStats : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
         Observable.EveryUpdate()
-            .Subscribe(_ => UpdateStats());
+            .Subscribe(_ => UpdateStats()).AddTo(this);
     }
 
     private void UpdateStats()
@@ -76,30 +73,30 @@ public class PlayerStats : MonoBehaviour
     {
         health -= damage * Time.deltaTime;
     }
-    public void Die()
+    public void GetHealed(float healing)
     {
-       
+        health += healing * Time.deltaTime;
+    }
+    public void GetFed(float food)
+    {
+        hunger += food * Time.deltaTime;
+    }
+
+    private void Die()
+    {
+        for(int i = 0; i < animator.parameterCount; i++)
+        {
+            animator.SetBool(i, false);
+        }
         StartCoroutine(DieAnim());
-
-
     }
 
     IEnumerator DieAnim()
     {
-
-        for (int i = 0; i < animator.parameterCount; i++)
-        {
-            animator.SetBool(i, false);
-        }
-        
         playerMovement.speed = 0;
         animator.SetBool("Die", true);
         yield return new WaitForSeconds(2);
 
-        GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
-        Manage manage = canvas.GetComponent<Manage>();
-        manage.GoMenu();
-       
+        //menu geç
     }
->>>>>>> Stashed changes
 }

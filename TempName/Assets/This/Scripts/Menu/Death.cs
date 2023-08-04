@@ -5,21 +5,21 @@ using TMPro;
 
 public class Death : MonoBehaviour
 {
-    
+    public Transform endPanel;
+    public Transform mainMenu;
+    public Transform loadScreen;
+
     void Start()
     {
 
         GameObject bridge = GameObject.FindGameObjectWithTag("Bridge");
         Bridge bridgeScript = bridge.GetComponent<Bridge>();
 
-     
         if (bridgeScript.first)
         {
-
-            GameObject panel = GameObject.FindGameObjectWithTag("Canvas");
-            panel.transform.GetChild(2).gameObject.SetActive(false);
-            panel.transform.GetChild(1).gameObject.SetActive(true);
-
+            endPanel.gameObject.SetActive(false);
+            mainMenu.gameObject.SetActive(true);
+            loadScreen.gameObject.SetActive(false);
         }
         else
         {
@@ -31,15 +31,11 @@ public class Death : MonoBehaviour
 
     public void DeathTasks()
     {
+        endPanel.gameObject.SetActive(true);
+        mainMenu.gameObject.SetActive(false);
 
-        GameObject panel = GameObject.FindGameObjectWithTag("Canvas");
-        panel.transform.GetChild(2).gameObject.SetActive(true);
-        panel.transform.GetChild(1).gameObject.SetActive(false);
-
-       
         GameObject bridge = GameObject.FindGameObjectWithTag("Bridge");
         Bridge bridgeScript = bridge.GetComponent<Bridge>();
-      
     }
     
 

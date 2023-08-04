@@ -1,3 +1,4 @@
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
@@ -9,6 +10,9 @@ public class TerrainGenerator : MonoBehaviour
 
     public float offsetX;
     public float offsetY;
+
+    private NavMeshSurface[] surfaces;
+    [SerializeField] private GameObject NavMesh;
 
     private void Start()
     {
@@ -22,8 +26,13 @@ public class TerrainGenerator : MonoBehaviour
    
         EnvironmentSpawner environmentSpawner = GetComponent<EnvironmentSpawner>();
         environmentSpawner.SpawnObjects();
-            
-   
+           
+
+        surfaces = NavMesh.GetComponentsInChildren<NavMeshSurface>();
+        foreach (var surface in surfaces)
+        {
+            surface.BuildNavMesh();
+        }
 
     }
 
