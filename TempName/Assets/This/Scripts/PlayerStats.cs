@@ -12,11 +12,9 @@ public class PlayerStats : MonoBehaviour
     private float healthDecrease;
     private PlayerMovement playerMovement;
     private Animator animator;
-
+    [HideInInspector] public bool isDead = false;
     private void Start()
     {
-        health = 100;
-        hunger = 100;
         healthDecrease = 2;
         playerMovement = GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
@@ -71,19 +69,20 @@ public class PlayerStats : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        health -= damage * Time.deltaTime;
+        health -= damage;
     }
     public void GetHealed(float healing)
     {
-        health += healing * Time.deltaTime;
+        health += healing;
     }
     public void GetFed(float food)
     {
-        hunger += food * Time.deltaTime;
+        hunger += food;
     }
 
     private void Die()
     {
+        isDead = true;
         for(int i = 0; i < animator.parameterCount; i++)
         {
             animator.SetBool(i, false);
@@ -94,7 +93,11 @@ public class PlayerStats : MonoBehaviour
     IEnumerator DieAnim()
     {
         playerMovement.speed = 0;
-        animator.SetBool("Die", true);
+        foreach (AnimatorControllerParameter p in animator.parameters)
+        {
+            animator.SetBool(p.name, false);
+        }
+        animator.SetBool("Death", true);
         yield return new WaitForSeconds(2);
 
         //menu geç

@@ -14,6 +14,7 @@ public class PlayerAttack : MonoBehaviour
     private bool attacking = false;
     //private bool didAttack = false;
     private float attackCooldown = 0.6f;
+    private string meatTag = "MEAT";
 
     private void Start()
     {
@@ -48,7 +49,7 @@ public class PlayerAttack : MonoBehaviour
         ColliderObject closestObject = consume.CheckClosestObject();
         if (closestObject != null)
         {
-            if (closestObject.Tag == "MEAT")
+            if (closestObject.Tag == meatTag)
             {
                 GameObject go = closestObject.Object.gameObject.transform.parent.gameObject;
 

@@ -2,26 +2,26 @@ using System.Collections;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 public class BoarAI : MonoBehaviour
 {
     Vector3[] patrolPoints = new Vector3[5]; // array of patrol points
-    [SerializeField] private float sightDistance;
     [SerializeField] private float sensDistance;
+    [SerializeField] private float attackRange;
     public LayerMask playerLayer;
     private float runningDistance = 5f;
     private Transform playerLastSeenAt;
     [SerializeField] private float attackCooldown;
-    [SerializeField] private float damage;
+    [SerializeField] private float damage = 10;
     private NavMeshAgent navMeshAgent;
     private Animator animator;
     private HealthPoints healthPoints;
     private int currentPatrolIndex = 0;
     private bool fleeing = false;
     private bool waiting = false;
-    private bool withinAttackRange = false;
-    private bool readyForAttack = true;
+    private bool chasing = false;
+    private bool attacking = false;
+    private bool canPatrol = true;
     private GameObject player;
 
     void Start()
@@ -44,72 +44,48 @@ public class BoarAI : MonoBehaviour
         Observable.EveryUpdate()
             .Subscribe(_ => ManageAnimations()).AddTo(this);
         Observable.EveryUpdate()
-            .Subscribe(_ => PlayerSeen()).AddTo(this);
+            .Subscribe(_ => AILifeCycle()).AddTo(this);
     }
 
-    private void PlayerSeen()
+    private void AILifeCycle()
     {
         if (healthPoints.isDead)
         {
             navMeshAgent.isStopped = true;
-            ManageAnimations();
-            StartCoroutine(Die());
         }
         Vector3 boarPosition = transform.position;
-        if (!fleeing)
+        if (canPatrol)
         {
             Patrol();
         }
-        Vector3 rayDirection = transform.forward;
-        RaycastHit hit;
+        
         Collider[] colliders = Physics.OverlapSphere(transform.position, sensDistance, playerLayer);
         if (colliders.Length > 0)
         {
-            playerLastSeenAt = colliders[0].gameObject.transform;
+            canPatrol = false;
+            player = colliders[0].gameObject;
+            playerLastSeenAt = player.transform;
+            Collider[] collidersInAttackRange = Physics.OverlapSphere(transform.position, attackRange, playerLayer);
             if (healthPoints.health < 40)
             {
                 Flee(boarPosition);
             }
-            //else if (withinAttackRange)
-            //{
-            //    if (readyForAttack)
-            //    {
-            //        Attack();
-            //    }
-            //}
-            //else if (!withinAttackRange)
-            //{
-            //    Chase(playerLastSeenAt.position);
-            //}
-            ManageAnimations();
-        }
-        else if (Physics.Raycast(boarPosition, rayDirection, out hit, sightDistance, playerLayer))
-        {
-            playerLastSeenAt = hit.transform;
-            if(healthPoints.health < 40)
+            else if (collidersInAttackRange.Length > 0)
             {
-                Flee(boarPosition);
+                chasing = false;
+                Vector3 directionToTarget = player.transform.position - transform.position;
+                directionToTarget.y = 0f;
+                Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+                transform.rotation = targetRotation;
+                if (!attacking)
+                {
+                    Attack();
+                }
             }
-            //else if (withinAttackRange)
-            //{
-            //    if (readyForAttack)
-            //    {
-            //        Attack();
-            //    }
-            //}
-            //else if (!withinAttackRange)
-            //{
-            //    Chase(playerLastSeenAt.position);
-            //}
-            ManageAnimations();
-        }
-        if (fleeing && Vector3.Distance(transform.position, playerLastSeenAt.position) > 50f) // stop running if distance is high
-        {
-            //start patrolling again
-            RandomPatrolPoints();
-            transform.rotation = Quaternion.Euler(0,
-                Quaternion.LookRotation(playerLastSeenAt.position).eulerAngles.y, 0);
-            fleeing = false;
+            else
+            {
+                Chase(playerLastSeenAt.position);
+            }
         }
     }
 
@@ -122,43 +98,6 @@ public class BoarAI : MonoBehaviour
             StartCoroutine(IdleAtPatrolPoint());
         }
     }
-
-    private void Flee(Vector3 boarPosition)
-    {
-        Vector3 fleeDirection = transform.position - playerLastSeenAt.position;
-        fleeDirection.y = 0f;
-        Vector3 fleePosition = boarPosition + fleeDirection.normalized * runningDistance;
-        navMeshAgent.SetDestination(fleePosition);
-    }
-
-    private void Chase(Vector3 playerPosition)
-    {
-        navMeshAgent.SetDestination(playerPosition);
-        ManageAnimations();
-    }
-    private void Attack()
-    {
-        //for(int i = 0; i<3; i++)
-        //{
-        //    if (animator.GetBool("Attack" + i.ToString()))
-        //    {
-        //        animator.SetBool("Attack" + i.ToString(), false);
-        //    }
-        //}
-        //string attack = "Attack" + Random.Range(0, 3).ToString();
-        //animator.SetBool(attack, true);
-        readyForAttack = false;
-        player.GetComponent<PlayerStats>().TakeDamage(damage);
-        StartCoroutine(WaitForAttackCooldown());
-    }
-
-    IEnumerator WaitForAttackCooldown()
-    {
-        yield return new WaitForSeconds(attackCooldown);
-        readyForAttack = true;
-    }
-
-
     IEnumerator IdleAtPatrolPoint()
     {
         waiting = true;
@@ -167,6 +106,70 @@ public class BoarAI : MonoBehaviour
         navMeshAgent.SetDestination(patrolPoints[currentPatrolIndex]);
     }
 
+    private void Flee(Vector3 boarPosition)
+    {
+        chasing = false;
+        fleeing = true;
+        Vector3 fleeDirection = transform.position - playerLastSeenAt.position;
+        fleeDirection.y = 0f;
+        Vector3 fleePosition = boarPosition + fleeDirection.normalized * runningDistance;
+        navMeshAgent.SetDestination(fleePosition);
+
+        if (fleeing && Vector3.Distance(transform.position, playerLastSeenAt.position) > 50f) // stop running if distance is high
+        {
+            //start patrolling again
+            RandomPatrolPoints();
+            transform.rotation = Quaternion.Euler(0,
+                Quaternion.LookRotation(playerLastSeenAt.position).eulerAngles.y, 0);
+            fleeing = false;
+            canPatrol = true;
+        }
+    }
+
+    private void Chase(Vector3 playerPosition)
+    {
+        fleeing = false;
+        chasing = true;
+        navMeshAgent.SetDestination(playerPosition);
+        ManageAnimations();
+    }
+    private void Attack()
+    {
+        navMeshAgent.speed = 0f;
+        foreach (AnimatorControllerParameter p in animator.parameters)
+        {
+            animator.SetBool(p.name, false);
+        }
+        for (int i = 0; i<3; i++)
+        {
+            if (animator.GetBool("Attack" + i.ToString()))
+            {
+                animator.SetBool("Attack" + i.ToString(), false);
+            }
+        }
+        string attack = "Attack" + Random.Range(0, 3).ToString();
+        animator.SetBool(attack, true);
+        attacking = true;
+        player.GetComponent<PlayerStats>().TakeDamage(damage);
+        Vector3 directionToTarget = player.transform.position - transform.position;
+        directionToTarget.y = 0f;
+        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+        transform.rotation = targetRotation;
+        StartCoroutine(WaitForAttackCooldown());
+    }
+
+    IEnumerator WaitForAttackCooldown()
+    {
+        yield return new WaitForSeconds(0.6f);
+        foreach (AnimatorControllerParameter p in animator.parameters)
+        {
+            animator.SetBool(p.name, false);
+        }
+        yield return new WaitForSeconds(attackCooldown);
+        attacking = false;
+    }
+
+
     private void RandomPatrolPoints()
     {
         for (int i = 0; i < patrolPoints.Length; i++)
@@ -174,11 +177,6 @@ public class BoarAI : MonoBehaviour
             patrolPoints[i] = new Vector3(transform.position.x + (Random.Range(0, 2) * 2 - 1) * Random.Range(6, 32), 0,
                 transform.position.z + (Random.Range(0, 2) * 2 - 1) * Random.Range(6, 32));
         }
-    }
-    IEnumerator Die()
-    {
-        yield return new WaitForSeconds(1);
-        healthPoints.Edible();
     }
 
     private void ManageAnimations()
@@ -189,19 +187,11 @@ public class BoarAI : MonoBehaviour
             animator.SetBool("isWalking", false);
             animator.SetBool("Idle", true);
         }
-        else if (fleeing)
+        else if (fleeing || chasing)
         {
             animator.SetBool("isWalking", false);
             animator.SetBool("Idle", false);
             animator.SetBool("isRunning", true);
-        }
-        else if (healthPoints.isDead)
-        {
-            foreach (AnimatorControllerParameter p in animator.parameters)
-            {
-                animator.SetBool(p.name, false);
-            }
-            animator.SetBool("isDead", true);
         }
         else
         {

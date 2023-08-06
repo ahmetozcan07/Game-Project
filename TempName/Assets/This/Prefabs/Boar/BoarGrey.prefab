@@ -1787,12 +1787,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8347f43ba3213fa47bdc6e82d03ce4e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sightDistance: 14
-  sensDistance: 7
+  sensDistance: 12
+  attackRange: 2
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  attackCooldown: 3
+  attackCooldown: 2
   damage: 10
 --- !u!195 &1316252857263240542
 NavMeshAgent:

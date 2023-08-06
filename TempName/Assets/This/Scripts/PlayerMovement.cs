@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
         speed = walkSpeed;
-        Observable.EveryUpdate().Subscribe(_ => Movement());
+        Observable.EveryUpdate().Subscribe(_ => Movement()).AddTo(this);
     }
 
     void Movement()
@@ -35,13 +35,13 @@ public class PlayerMovement : MonoBehaviour
 
         movement = new Vector3(horizontalMove, 0f, verticalMove).normalized * speed;
 
-        if (movement != Vector3.zero)
+        if (movement != Vector3.zero && !playerStats.isDead)
         {
             transform.forward = movement;
             animator.SetBool("Idle", false);
             animator.SetBool("Run Forward", true);
         }
-        else
+        else if(!playerStats.isDead)
         {
             animator.SetBool("Idle", true);
             animator.SetBool("Run Forward", false);
