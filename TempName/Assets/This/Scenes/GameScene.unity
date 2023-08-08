@@ -213,11 +213,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13714521}
   m_CullTransparentMesh: 1
---- !u!1 &17020891 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7962199819078159310, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
-  m_PrefabInstance: {fileID: 446794200}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &64839671
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,18 +931,6 @@ PrefabInstance:
       propertyPath: touchRegion
       value: 
       objectReference: {fileID: 13714522}
-    - target: {fileID: 2675194667809856855, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
-      propertyPath: m_Mass
-      value: 600
-      objectReference: {fileID: 0}
-    - target: {fileID: 2675194667809856855, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
-      propertyPath: m_Constraints
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 2675194667809856855, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
-      propertyPath: m_Interpolate
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2731920713774065720, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
       propertyPath: damage
       value: 20
@@ -1096,31 +1079,13 @@ PrefabInstance:
     - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7962199819078159310, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 446794209}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
 --- !u!4 &446794201 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
   m_PrefabInstance: {fileID: 446794200}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &446794209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17020891}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84bf42469cd7a5b419a5b7faf64a6a54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  raycastDistance: 3
-  rb: {fileID: 0}
-  rotationSpeed: 195
 --- !u!1 &498852795
 GameObject:
   m_ObjectHideFlags: 0
