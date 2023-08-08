@@ -9,10 +9,13 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Image hungerBar;
     [HideInInspector] public float health = 100;
     [HideInInspector] public float hunger = 100;
+
     private float healthDecrease;
     private PlayerMovement playerMovement;
     private Animator animator;
+
     [HideInInspector] public bool isDead = false;
+
     private void Start()
     {
         healthDecrease = 2;
@@ -98,8 +101,9 @@ public class PlayerStats : MonoBehaviour
             animator.SetBool(p.name, false);
         }
         animator.SetBool("Death", true);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
 
-        //menu geç
+        SurvivalTime survivalTimeScript = GetComponent<SurvivalTime>();
+        survivalTimeScript.GoMenu();
     }
 }

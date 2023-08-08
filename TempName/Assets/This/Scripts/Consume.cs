@@ -18,10 +18,14 @@ public class ColliderObject
 public class Consume : MonoBehaviour
 {
     public List<ColliderObject> interactableObjects = new List<ColliderObject>();
+
     [SerializeField] private RectTransform touchRegion;
+
     private Animator animator;
     private PlayerMovement playerMovement;
     private PlayerStats playerStats;
+
+    public ColliderObject theObject;
 
     private void Start()
     {
@@ -31,39 +35,48 @@ public class Consume : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        GameObject otherObject = other.gameObject;
-        ColliderObject newColliderObject = new ColliderObject(otherObject.tag, otherObject);
+        ColliderObject newColliderObject = new ColliderObject(other.gameObject.tag, other.gameObject);
         interactableObjects.Add(newColliderObject);
     }
-
     private void OnTriggerExit(Collider other)
     {
-        GameObject otherObject = other.gameObject;
-        ColliderObject removedObject = interactableObjects.Find(obj => obj.Object == otherObject);
+        ColliderObject removedObject = interactableObjects.Find(obj => obj.Object == other.gameObject);
         if (removedObject != null)
         {
             interactableObjects.Remove(removedObject);
         }
     }
 
-    public ColliderObject CheckClosestObject()
+    public void CheckClosestObject()
     {
         ColliderObject closestObject = null;
-        float closestDistance = Mathf.Infinity;
-        Vector3 characterPosition = transform.position;
 
-        foreach (ColliderObject colliderObj in interactableObjects)
+        if (interactableObjects.Count > 0)
         {
-            float distance = Vector3.Distance(colliderObj.Object.transform.position, characterPosition);
-            if (distance < closestDistance)
+            float closestDistance = Mathf.Infinity;
+            Vector3 characterPosition = transform.position;
+
+            foreach (ColliderObject colliderObj in interactableObjects)
             {
-                closestObject = colliderObj;
-                closestDistance = distance;
+
+                if (colliderObj.Object != null)
+                {
+                    float distance = Vector3.Distance(colliderObj.Object.transform.position, characterPosition);
+                    if (distance < closestDistance)
+                    {
+                        closestObject = colliderObj;
+                        closestDistance = distance;
+                    }
+                }
+
+
             }
+
         }
 
-        return closestObject;       
+        theObject = closestObject;
     }
+
 
     private void OnEnable()
     {
@@ -79,47 +92,51 @@ public class Consume : MonoBehaviour
     {
         if (RectTransformUtility.RectangleContainsScreenPoint(touchRegion, finger.ScreenPosition))
         {
-            PerformActionForRegion();
+            CheckClosestObject();
+            PerformActionForObject();
         }
     }
 
-    private void PerformActionForRegion()
+    private void PerformActionForObject()
     {
-        ColliderObject closestObject = CheckClosestObject();
 
-        if(closestObject != null)
+        if (theObject != null)
         {
-            switch (closestObject.Tag)
+            switch (theObject.Tag)
             {
                 case "M1":
-                    EatMushroom1(closestObject);
+                    EatMushroom1();
                     break;
                 case "M2":
-                    EatMushroom2(closestObject);
+                    EatMushroom2();
                     break;
                 case "M3":
-                    EatMushroom3(closestObject);
+                    EatMushroom3();
                     break;
                 case "M4":
-                    EatMushroom4(closestObject);
+                    EatMushroom4();
                     break;
                 case "G1":
-                    EatGrass1(closestObject);
+                    EatGrass1();
                     break;
                 case "G2":
-                    EatGrass2(closestObject);
+                    EatGrass2();
                     break;
                 case "MEAT":
-                    EatMeat(closestObject);
+                    //EatMeat();
                     break;
                 default:
                     break;
             }
+
+
         }
+
+
     }
 
 
-
+    /*
     void EatMeat(ColliderObject closestObject)
     {
         GameObject go = closestObject.Object.gameObject.transform.parent.gameObject;
@@ -139,74 +156,89 @@ public class Consume : MonoBehaviour
 
             }
         }
-        Eat(closestObject);
-        interactableObjects.Remove(closestObject);
-        //meat tipinde bir objeye dönüþecek ve bir miktar azalacak bitince ytok olur, bu meat tipi bu hayvanlarýn bir alt objesi script falan ayný sadece meat miktarý farklý
+
+        interactableObjects.Remove(theObject);
+        Eat(theObject);
+
+        //meat tipinde bir objeye dönüþecek ve bir miktar azalacak bitince ytok olur,
+        //bu meat tipi bu hayvanlarýn bir alt objesi script falan ayný sadece meat miktarý farklý
         //ve sadece hayvan ölü moda geçince açýlýr
     }
-
-    void EatMushroom1(ColliderObject closestObject)
+    */
+    void EatMushroom1()
     {
-        Eat(closestObject);
+        Eat();
         //etkileri
         //deðerler için  veya özelliklerinde
-        interactableObjects.Remove(closestObject);
     }
-    void EatMushroom2(ColliderObject closestObject)
+    void EatMushroom2()
     {
-        Eat(closestObject);
-        interactableObjects.Remove(closestObject);
+        Eat();
     }
-    void EatMushroom3(ColliderObject closestObject)
+    void EatMushroom3()
     {
-        Eat(closestObject);
-        interactableObjects.Remove(closestObject);
+        Eat();
     }
-    void EatMushroom4(ColliderObject closestObject)
+    void EatMushroom4()
     {
-        Eat(closestObject);
-        interactableObjects.Remove(closestObject);
+        Eat();
     }
-    void EatGrass1(ColliderObject closestObject)
+    void EatGrass1()
     {
-        Eat(closestObject);
-        interactableObjects.Remove(closestObject);
+        Eat();
     }
-    void EatGrass2(ColliderObject closestObject)
+    void EatGrass2()
     {
-        Eat(closestObject);
-        interactableObjects.Remove(closestObject);
+        Eat();   
     }
-    void Eat(ColliderObject closestObject)
+    void Eat()
     {
-     //animasyon da buraya gelmeli
+        TurnToMeal();
 
-      
-        Vector3 targetPosition = closestObject.Object.transform.position;
-        Vector3 directionToTarget = targetPosition - transform.position;
-        directionToTarget.y = 0f; // Eðimden kaynaklý yükseklik farkýný dikkate almayacaðýz.
+        StartCoroutine(EatAnimation());
+        
+        DestroyTheObject();
 
-        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
-        transform.rotation = targetRotation;
-
-        //animasyon
-        StartCoroutine(Eat(closestObject.Object.gameObject.transform.parent.gameObject));
+        CheckClosestObject();
     }
 
-    IEnumerator Eat(GameObject obj)
+    IEnumerator EatAnimation()
     {
         animator.SetBool("Eat", true);
-        playerMovement.speed = 0f;
-        yield return new WaitForSeconds(1.5f);
-        animator.SetBool("Eat", false);
+        playerMovement.canWalk = false;
 
-        if (playerMovement.isSprinting)
-        {
-            playerMovement.speed = playerMovement.sprintSpeed;
-        }
-        else
-        {
-            playerMovement.speed = playerMovement.walkSpeed;
-        }
+        yield return new WaitForSeconds(1.5f);
+
+        animator.SetBool("Eat", false);
+        playerMovement.canWalk = true;
+        playerMovement.SprintCheck();
+
     }
+
+    void TurnToMeal()
+    {
+        Vector3 targetPosition = theObject.Object.transform.position;
+        Vector3 directionToTarget = targetPosition - transform.position;
+        directionToTarget.y = 0f;
+        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+        transform.rotation = targetRotation;
+    }
+    
+    void DestroyTheObject()
+    {
+       
+        ColliderObject removedObject = interactableObjects.Find(obj => obj.Object == theObject.Object);
+
+        if (removedObject != null)
+        {
+            interactableObjects.Remove(removedObject);
+        }
+
+        GameObject.Destroy(theObject.Object.transform.parent.gameObject);
+
+        //parentý asýl prefab oluyor, ama geri kalan er iþlem ve interactableObjectste tutlan object asýl prefab deðil
+        theObject = null;
+    }
+
+
 }

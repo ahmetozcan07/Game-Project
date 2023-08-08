@@ -2,16 +2,30 @@ using UnityEngine;
 
 public class SpawnCycle : MonoBehaviour
 {
-    public int hunter;
-    public int boar;
-    public int deer;
-    public int rabbit;
-    public int mushroom;
-    public int grass;
+    public int hunterNumber;
+    public int boarNumber;
+    public int deerNumber;
+    public int rabbitNumber;
+    public int mushroomNumber;
+    public int grassNumber;
     //tüketildiðinde bu scriptte azaltýlmalý
 
+    private int hunterCreating = 1;
+    private int boarCreating = 4;
+    private int deerCreating = 4;
+    private int rabbitCreating = 6;
+    private int mushroomCreating = 8;
+    private int grassCreating = 8;
+
+    private int hunterRestrict = 1;
+    private int boarRestrict = 4;
+    private int deerRestrict = 4;
+    private int rabbitRestrict = 8;
+    private int mushroomRestrict = 32;
+    private int grassRestrict = 64;
+
+
     public GameObject[] prefabs;
-    //Hunter1 Boar1 Deer2 Rabbit1 Mushroom4 Grass2 = 11 prefab with this order
     private float minimumSpacing = 2; //minimum mesafe
 
 
@@ -81,74 +95,86 @@ public class SpawnCycle : MonoBehaviour
 
     void SpawnHunter ()
     {
-        if (hunter < 1){
+        if (hunterNumber < hunterRestrict){
 
-            Spawn(prefabs[0]);
+            for (int i = 0; i < hunterCreating/1; i++)
+            {
+                Spawn(prefabs[0]);
+            }
+            hunterNumber += hunterCreating;
         }
     }
 
     void SpawnBoar()
     {
-        if (boar < 4){
+        if (boarNumber < boarRestrict){
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < boarCreating/2; i++)
             {
                 Spawn(prefabs[1]);
                 Spawn(prefabs[2]);
             }
+            boarNumber += boarCreating;
         }
     }
 
     void SpawnDeer()
     {
-        if (deer < 4){
-            for (int i = 0; i < 2; i++)
+        if (deerNumber < deerRestrict){
+            for (int i = 0; i < deerCreating/2; i++)
             {
                 Spawn(prefabs[3]);
                 Spawn(prefabs[4]);
             }
+            deerNumber += deerCreating;
         }
     }
 
 
     void SpawnRabbit()
     {
-        if(rabbit < 8){
-            Spawn(prefabs[5]);
-            Spawn(prefabs[6]);
-            Spawn(prefabs[7]);
-            Spawn(prefabs[8]);
-            Spawn(prefabs[9]);
-            Spawn(prefabs[10]);
+        if(rabbitNumber < rabbitRestrict){
+            for (int i = 0; i < rabbitCreating/6; i++)
+            {
+                Spawn(prefabs[5]);
+                Spawn(prefabs[6]);
+                Spawn(prefabs[7]);
+                Spawn(prefabs[8]);
+                Spawn(prefabs[9]);
+                Spawn(prefabs[10]);
+            }
+            rabbitNumber += rabbitCreating;
         }
+        
     }
 
     void SpawnMushroom()
     {
 
-        if (mushroom < 32){
+        if (mushroomNumber < mushroomRestrict){
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < mushroomCreating/4; i++)
             {
                 Spawn(prefabs[11]);
                 Spawn(prefabs[12]);
                 Spawn(prefabs[13]);
                 Spawn(prefabs[14]);
             }
+            mushroomNumber += mushroomCreating;
         }
     }
 
     void SpawnGrass()
     {
 
-        if (grass < 64){
+        if (grassNumber < grassRestrict){
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < grassCreating/2; i++)
             {
                 Spawn(prefabs[15]);
                 Spawn(prefabs[16]);
             }
-            
+            grassNumber += grassCreating;
         }
     }
 

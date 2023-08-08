@@ -40,27 +40,7 @@ public class MenuCamera : MonoBehaviour
         Vector3 newRotation = transform.eulerAngles;
         newRotation.x -= speed * Time.deltaTime;
         transform.eulerAngles = newRotation;
-        Debug.Log(transform.eulerAngles.x);
     }
 
-  
  
-
-
-    /*
-    public IEnumerator CameraMoveCoroutine()
-    {
-        Vector3 targetRotation = new Vector3(target, transform.eulerAngles.y, transform.eulerAngles.z);
-
-        while (transform.eulerAngles.x > target-2f)
-        {
-            Vector3 newRotation = transform.eulerAngles;
-            newRotation.x -= speed * Time.deltaTime;
-            transform.eulerAngles = newRotation;
-            yield return null;
-        }
-
-        transform.eulerAngles = targetRotation;
-    }
-    */
 }

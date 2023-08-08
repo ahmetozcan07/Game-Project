@@ -34,6 +34,7 @@ public class Death : MonoBehaviour
     {
         endPanel.gameObject.SetActive(true);
         mainMenu.gameObject.SetActive(false);
+        loadScreen.gameObject.SetActive(false);
 
         GameObject bridge = GameObject.FindGameObjectWithTag("Bridge");
         Bridge bridgeScript = bridge.GetComponent<Bridge>();

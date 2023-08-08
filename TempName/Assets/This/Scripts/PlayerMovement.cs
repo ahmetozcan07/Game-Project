@@ -6,14 +6,19 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private Joystick joystick;
     [SerializeField] private RectTransform touchRegion;
+
     public float walkSpeed;
     public float sprintSpeed;
+    public bool canWalk = true;
     private bool canSprint = true;
+
     [HideInInspector] public float speed;
     [HideInInspector] public bool isSprinting = true;
     [HideInInspector] public Vector3 movement = new Vector3 ();
+
     private float horizontalMove = 0;
     private float verticalMove = 0;
+
     private Rigidbody rb;
     private Animator animator;
     private PlayerStats playerStats;
@@ -33,12 +38,48 @@ public class PlayerMovement : MonoBehaviour
     void Movement()
     {
 
+
+        horizontalMove = joystick.Horizontal;
+        verticalMove = joystick.Vertical;
+
+        if (!playerStats.isDead && canWalk)
+        {
+            movement = new Vector3(horizontalMove, 0f, verticalMove).normalized * speed;
+
+            if (movement != Vector3.zero)
+            {
+                transform.forward = movement;
+                animator.SetBool("Idle", false);
+                animator.SetBool("Run Forward", true);
+
+            }
+            else
+            {
+                animator.SetBool("Idle", true);
+                animator.SetBool("Run Forward", false);
+            }
+
+            SprintCheck();
+
+            rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+
+        }
+
+
+
+
+
+
+
+
+
+/*
         horizontalMove = joystick.Horizontal;
         verticalMove = joystick.Vertical;
 
         movement = new Vector3(horizontalMove, 0f, verticalMove).normalized * speed;
 
-        if (movement != Vector3.zero && !playerStats.isDead)
+        if (movement != Vector3.zero && !playerStats.isDead && canWalk)
         {
             transform.forward = movement;
             animator.SetBool("Idle", false);
@@ -50,18 +91,9 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("Run Forward", false);
         }
 
-        if(playerStats.health < 70 || playerStats.hunger < 10)
-        {
-            canSprint = false;
-            speed = walkSpeed;
-            isSprinting = false;
-        }
-        else
-        {
-            canSprint = true;
-        }
+        SprintCheck();
 
-        rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+        rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);*/
     }
 
     void Rotation()
@@ -105,5 +137,19 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+    }
+
+    public void SprintCheck()
+    {
+        if (playerStats.health < 70 || playerStats.hunger < 10)
+        {
+            canSprint = false;
+            speed = walkSpeed;
+            isSprinting = false;
+        }
+        else
+        {
+            canSprint = true;
+        }
     }
 }
