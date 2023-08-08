@@ -46,7 +46,9 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack()
     {
-        ColliderObject closestObject = consume.CheckClosestObject();
+        consume.CheckClosestObject();
+        ColliderObject closestObject = consume.theObject;
+
         if (closestObject != null)
         {
             if (closestObject.Tag == meatTag)
