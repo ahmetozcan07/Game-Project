@@ -136,10 +136,9 @@ public class Consume : MonoBehaviour
     }
 
 
-    /*
-    void EatMeat(ColliderObject closestObject)
+    void EatMeat()
     {
-        GameObject go = closestObject.Object.gameObject.transform.parent.gameObject;
+        GameObject go = theObject.Object.gameObject.transform.parent.gameObject;
         if (go.GetComponent<HealthPoints>().isEdible)
         {
             //hayvan türüne göre farklý etki
@@ -157,19 +156,18 @@ public class Consume : MonoBehaviour
             }
         }
 
-        interactableObjects.Remove(theObject);
-        Eat(theObject);
+      
+        Eat();
 
         //meat tipinde bir objeye dönüþecek ve bir miktar azalacak bitince ytok olur,
         //bu meat tipi bu hayvanlarýn bir alt objesi script falan ayný sadece meat miktarý farklý
         //ve sadece hayvan ölü moda geçince açýlýr
     }
-    */
+   
     void EatMushroom1()
     {
         Eat();
-        //etkileri
-        //deðerler için  veya özelliklerinde
+
     }
     void EatMushroom2()
     {
@@ -186,10 +184,12 @@ public class Consume : MonoBehaviour
     void EatGrass1()
     {
         Eat();
+        playerStats.GetStamina(50f);
     }
     void EatGrass2()
     {
-        Eat();   
+        Eat();
+        playerStats.GetHealed(25f);
     }
     void Eat()
     {
