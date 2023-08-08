@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private Animator animator;
     private PlayerStats playerStats;
+    private float raycastDistance = 3f;
+    private float rotationSpeed = 1f;
 
     void Start()
     {
@@ -25,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         speed = walkSpeed;
         Observable.EveryUpdate().Subscribe(_ => Movement()).AddTo(this);
+        Observable.EveryUpdate().Subscribe(_ => Rotation()).AddTo(this);
     }
 
     void Movement()
@@ -59,6 +62,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+    }
+
+    void Rotation()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance))
+        {
+            Vector3 moveDirection = hit.normal;
+            float groundAngle = Vector3.Angle(moveDirection, rb.transform.forward);
+            Quaternion targetRotation = transform.rotation * Quaternion.Euler((90 - groundAngle), 0f, 0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
+        }
     }
 
     private void OnEnable()
