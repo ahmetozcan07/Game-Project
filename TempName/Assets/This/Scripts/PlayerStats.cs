@@ -13,6 +13,9 @@ public class PlayerStats : MonoBehaviour
     [HideInInspector] public float hunger = 100;
     [HideInInspector] public float stamina = 100;
 
+    public bool fullStamina = false;
+    public bool stopHunger = false;
+
     private float healthDecrease;
     private PlayerMovement playerMovement;
     private Animator animator;
@@ -38,40 +41,53 @@ public class PlayerStats : MonoBehaviour
 
         if (health > 0)
         {
-
-            if (playerMovement.movement == Vector3.zero)
-            {
-                stamina += 8f * Time.deltaTime;
-            }
-            else if (playerMovement.isSprinting)
-            {
-                stamina -= 8f * Time.deltaTime;
+            if (fullStamina)
+            { 
+                stamina = 100; 
             }
             else
             {
-                stamina -= 4f * Time.deltaTime;
+                if (playerMovement.movement == Vector3.zero)
+                {
+                    stamina += 8f * Time.deltaTime;
+                }
+                else if (playerMovement.isSprinting)
+                {
+                    stamina -= 8f * Time.deltaTime;
+                }
+                else
+                {
+                    stamina -= 4f * Time.deltaTime;
+                }
             }
         }
-        if (health < 0){ stamina = 0f; }
+        if (health < 0)
+        { 
+            stamina = 0f; 
+        }
 
 
         if (hunger > 0)
         {
-            if (stamina > 75)
+            if (!stopHunger)
             {
-                hunger -= 1f * Time.deltaTime;
-            }
-            else if (stamina > 50)
-            {
-                hunger -= 2f * Time.deltaTime;
-            }
-            else if (stamina > 25)
-            {
-                hunger -= 3f * Time.deltaTime;
-            }
-            else
-            {
-                hunger -= 4f * Time.deltaTime;
+
+                if (stamina > 75)
+                {
+                    hunger -= 1f * Time.deltaTime;
+                }
+                else if (stamina > 50)
+                {
+                    hunger -= 2f * Time.deltaTime;
+                }
+                else if (stamina > 25)
+                {
+                    hunger -= 3f * Time.deltaTime;
+                }
+                else
+                {
+                    hunger -= 4f * Time.deltaTime;
+                }
             }
 
             if (hunger > 50)
@@ -81,13 +97,15 @@ public class PlayerStats : MonoBehaviour
             }
 
         }
-
-   
-        if (hunger == 0)
+        else
         {
             health -= healthDecrease * Time.deltaTime;
             healthDecrease += 0.5f * Time.deltaTime;
         }
+
+
+
+
         if (health <= 0)
         {
             Die();
@@ -121,7 +139,14 @@ public class PlayerStats : MonoBehaviour
         FixStats();
     }
 
-
+    public void UseStamina(float breath)
+    {
+        if (!fullStamina)
+        {
+            stamina -= breath;
+            FixStats();
+        }
+    }
 
 
 
@@ -182,5 +207,31 @@ public class PlayerStats : MonoBehaviour
 
         SurvivalTime survivalTimeScript = GetComponent<SurvivalTime>();
         survivalTimeScript.GoMenu();
+    }
+
+
+    IEnumerator FullStaminaOnC()
+    {
+        fullStamina = true;
+        yield return new WaitForSeconds(10f);
+        fullStamina = false;
+    }
+
+    public void FullStaminaOn()
+    {
+        StartCoroutine(FullStaminaOnC());
+    }
+
+
+    IEnumerator StopHungerOnC()
+    {
+        stopHunger = true;
+        yield return new WaitForSeconds(10f);
+        stopHunger = false;
+    }
+
+    public void StopHungerOn()
+    {
+        StartCoroutine(StopHungerOnC());
     }
 }

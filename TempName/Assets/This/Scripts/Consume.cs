@@ -24,6 +24,7 @@ public class Consume : MonoBehaviour
     private Animator animator;
     private PlayerMovement playerMovement;
     private PlayerStats playerStats;
+    private PlayerAttack playerAttack;
 
     public ColliderObject theObject;
 
@@ -32,6 +33,7 @@ public class Consume : MonoBehaviour
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
         playerStats = GetComponent<PlayerStats>();
+        playerAttack = GetComponent<PlayerAttack>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -167,24 +169,29 @@ public class Consume : MonoBehaviour
     void EatMushroom1()
     {
         Eat();
-
+        playerMovement.FasterOn();
     }
     void EatMushroom2()
     {
         Eat();
+        playerAttack.StrongerOn();
     }
     void EatMushroom3()
     {
         Eat();
+        playerStats.FullStaminaOn();
+
     }
     void EatMushroom4()
     {
         Eat();
+        playerStats.StopHungerOn();
+
     }
     void EatGrass1()
     {
         Eat();
-        playerStats.GetStamina(50f);
+        playerStats.GetStamina(100f);
     }
     void EatGrass2()
     {
@@ -241,4 +248,5 @@ public class Consume : MonoBehaviour
     }
 
 
+ 
 }

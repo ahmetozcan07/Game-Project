@@ -29,6 +29,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Capglow: 0.7
     - _Underglow: 0.7
     m_Colors:
     - _BaseColor1: {r: 0.4811321, g: 0.4685286, b: 0.18337487, a: 1}

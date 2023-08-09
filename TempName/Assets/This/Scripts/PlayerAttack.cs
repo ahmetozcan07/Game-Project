@@ -15,6 +15,7 @@ public class PlayerAttack : MonoBehaviour
     //private bool didAttack = false;
     private float attackCooldown = 0.6f;
     private string meatTag = "MEAT";
+    private float power;
 
     private void Start()
     {
@@ -71,6 +72,7 @@ public class PlayerAttack : MonoBehaviour
         {
             StartCoroutine(AttackAnim());
         }
+        playerStats.UseStamina(20f);
     }
 
     private void DealDamage(GameObject go)
@@ -124,6 +126,18 @@ public class PlayerAttack : MonoBehaviour
         {
             playerMovement.speed = playerMovement.walkSpeed;
         }
+    }
+
+    IEnumerator StrongerOnC()
+    {
+        power = 40f;
+        yield return new WaitForSeconds(10f);
+        power = 20f;
+    }
+
+    public void StrongerOn()
+    {
+        StartCoroutine(StrongerOnC());
     }
 
 
