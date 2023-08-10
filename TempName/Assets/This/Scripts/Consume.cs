@@ -24,6 +24,7 @@ public class Consume : MonoBehaviour
     private Animator animator;
     private PlayerMovement playerMovement;
     private PlayerStats playerStats;
+    private PlayerAttack playerAttack;
 
     public ColliderObject theObject;
 
@@ -32,6 +33,7 @@ public class Consume : MonoBehaviour
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
         playerStats = GetComponent<PlayerStats>();
+        playerAttack = GetComponent<PlayerAttack>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -136,10 +138,9 @@ public class Consume : MonoBehaviour
     }
 
 
-    /*
-    void EatMeat(ColliderObject closestObject)
+    void EatMeat()
     {
-        GameObject go = closestObject.Object.gameObject.transform.parent.gameObject;
+        GameObject go = theObject.Object.gameObject.transform.parent.gameObject;
         if (go.GetComponent<HealthPoints>().isEdible)
         {
             //hayvan türüne göre farklý etki
@@ -157,39 +158,45 @@ public class Consume : MonoBehaviour
             }
         }
 
-        interactableObjects.Remove(theObject);
-        Eat(theObject);
+      
+        Eat();
 
         //meat tipinde bir objeye dönüþecek ve bir miktar azalacak bitince ytok olur,
         //bu meat tipi bu hayvanlarýn bir alt objesi script falan ayný sadece meat miktarý farklý
         //ve sadece hayvan ölü moda geçince açýlýr
     }
-    */
+   
     void EatMushroom1()
     {
         Eat();
-        //etkileri
-        //deðerler için  veya özelliklerinde
+        playerMovement.FasterOn();
     }
     void EatMushroom2()
     {
         Eat();
+        playerAttack.StrongerOn();
     }
     void EatMushroom3()
     {
         Eat();
+        playerStats.FullStaminaOn();
+
     }
     void EatMushroom4()
     {
         Eat();
+        playerStats.StopHungerOn();
+
     }
     void EatGrass1()
     {
         Eat();
+        playerStats.GetStamina(100f);
     }
     void EatGrass2()
     {
-        Eat();   
+        Eat();
+        playerStats.GetHealed(25f);
     }
     void Eat()
     {
@@ -241,4 +248,5 @@ public class Consume : MonoBehaviour
     }
 
 
+ 
 }

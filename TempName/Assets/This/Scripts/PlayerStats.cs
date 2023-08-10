@@ -7,8 +7,14 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField] private Image healthBar;
     [SerializeField] private Image hungerBar;
+    [SerializeField] private Image staminaBar;
+
     [HideInInspector] public float health = 100;
     [HideInInspector] public float hunger = 100;
+    [HideInInspector] public float stamina = 100;
+
+    public bool fullStamina = false;
+    public bool stopHunger = false;
 
     private float healthDecrease;
     private PlayerMovement playerMovement;
@@ -19,69 +25,165 @@ public class PlayerStats : MonoBehaviour
     private void Start()
     {
         healthDecrease = 2;
+
         playerMovement = GetComponent<PlayerMovement>();
+
         animator = GetComponent<Animator>();
+
         Observable.EveryUpdate()
             .Subscribe(_ => UpdateStats()).AddTo(this);
     }
 
     private void UpdateStats()
     {
-        if (hunger > 0)
+        FixStats();
+
+
+        if (health > 0)
         {
-            if(hunger >= 100)
-            {
-                hunger = 100;
-            }
-            if(playerMovement.movement == Vector3.zero)
-            {
-                hunger -= 0.5f * Time.deltaTime;
-            }
-            else if(playerMovement.isSprinting)
-            {
-                hunger -= 4 * Time.deltaTime;
+            if (fullStamina)
+            { 
+                stamina = 100; 
             }
             else
             {
-                hunger -= 2 * Time.deltaTime;
-            }
-            if (hunger > 50)
-            {
-                health += 2 * Time.deltaTime;
-                if (health >= 100)
+                if (playerMovement.movement == Vector3.zero)
                 {
-                    health = 100;
+                    stamina += 8f * Time.deltaTime;
+                }
+                else if (playerMovement.isSprinting)
+                {
+                    stamina -= 8f * Time.deltaTime;
+                }
+                else
+                {
+                    stamina -= 4f * Time.deltaTime;
                 }
             }
         }
+        if (health < 0)
+        { 
+            stamina = 0f; 
+        }
+
+
+        if (hunger > 0)
+        {
+            if (!stopHunger)
+            {
+
+                if (stamina > 75)
+                {
+                    hunger -= 1f * Time.deltaTime;
+                }
+                else if (stamina > 50)
+                {
+                    hunger -= 2f * Time.deltaTime;
+                }
+                else if (stamina > 25)
+                {
+                    hunger -= 3f * Time.deltaTime;
+                }
+                else
+                {
+                    hunger -= 4f * Time.deltaTime;
+                }
+            }
+
+            if (hunger > 50)
+            {
+                health += 2 * Time.deltaTime;
+                FixStats();
+            }
+
+        }
         else
         {
-            hunger = 0;
-        }
-        if (hunger == 0)
-        {
             health -= healthDecrease * Time.deltaTime;
-            healthDecrease += 1 * Time.deltaTime;
+            healthDecrease += 0.5f * Time.deltaTime;
         }
+
+
+
+
         if (health <= 0)
         {
             Die();
         }
+
         healthBar.fillAmount = health / 100;
         hungerBar.fillAmount = hunger / 100;
+        staminaBar.fillAmount = stamina / 100;
     }
+
+
     public void TakeDamage(float damage)
     {
         health -= damage;
+        FixStats();
     }
     public void GetHealed(float healing)
     {
         health += healing;
+        FixStats();
     }
     public void GetFed(float food)
     {
         hunger += food;
+        FixStats();
     }
+
+    public void GetStamina(float breath)
+    {
+        stamina += breath;
+        FixStats();
+    }
+
+    public void UseStamina(float breath)
+    {
+        if (!fullStamina)
+        {
+            stamina -= breath;
+            FixStats();
+        }
+    }
+
+
+
+    void FixStats()
+    {
+        if (stamina > 100)
+        {
+            stamina = 100;
+        }
+
+        if (hunger > 100)
+        {
+            hunger = 100;
+        }
+
+        if (health > 100)
+        {
+            health = 100;
+        }
+
+        if (stamina < 0)
+        {
+            stamina = 0;
+        }
+
+        if (hunger < 0)
+        {
+            hunger = 0;
+        }
+
+        if (health < 0)
+        {
+            health = 0;
+        }
+
+    }
+
 
     private void Die()
     {
@@ -105,5 +207,31 @@ public class PlayerStats : MonoBehaviour
 
         SurvivalTime survivalTimeScript = GetComponent<SurvivalTime>();
         survivalTimeScript.GoMenu();
+    }
+
+
+    IEnumerator FullStaminaOnC()
+    {
+        fullStamina = true;
+        yield return new WaitForSeconds(10f);
+        fullStamina = false;
+    }
+
+    public void FullStaminaOn()
+    {
+        StartCoroutine(FullStaminaOnC());
+    }
+
+
+    IEnumerator StopHungerOnC()
+    {
+        stopHunger = true;
+        yield return new WaitForSeconds(10f);
+        stopHunger = false;
+    }
+
+    public void StopHungerOn()
+    {
+        StartCoroutine(StopHungerOnC());
     }
 }

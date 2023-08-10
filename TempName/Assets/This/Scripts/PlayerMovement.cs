@@ -1,6 +1,7 @@
 using Lean.Touch;
 using UniRx;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -151,5 +152,20 @@ public class PlayerMovement : MonoBehaviour
         {
             canSprint = true;
         }
+    }
+
+
+    IEnumerator FasterOnC()
+    {
+        walkSpeed = 20;
+        sprintSpeed = 40;
+        yield return new WaitForSeconds(10f);
+        walkSpeed = 10;
+        sprintSpeed = 20;
+    }
+
+    public void FasterOn()
+    {
+        StartCoroutine(FasterOnC());
     }
 }
