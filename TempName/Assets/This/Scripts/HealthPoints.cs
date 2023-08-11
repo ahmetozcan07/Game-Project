@@ -22,8 +22,8 @@ public class HealthPoints : MonoBehaviour
         if (health <= 0)
         {
             isDead = true;
+            Die();
         }
-        Debug.Log("hasar yedi: " + damage);
     }
 
     public void Edible()
